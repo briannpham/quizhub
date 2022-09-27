@@ -150,12 +150,6 @@ CARD
   font-size: 1.3rem;
 }
 
-.cardHeader.editting {
-  justify-content: flex-end;
-  gap: 20px;
-}
-
-
 .showAnswer {
   font-size: 0.9rem;
 }
@@ -210,6 +204,15 @@ CARD (EDITING)
 
 .cardHeader {
   font-size: initial;
+}
+
+.cardHeader.editing {
+  font-size: initial;
+}
+
+.cardHeader.editing div {
+  display: flex;
+  gap: 15px;
 }
 
 .form-control.editing {

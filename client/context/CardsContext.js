@@ -4,7 +4,7 @@ import ACTIONS from "../constants/cardsConstant";
 
 export const CardsContext = createContext();
 const intialState = {
-  cards: null
+  cards: []
 };
 
 export const cardsReducer = (state, action) => {

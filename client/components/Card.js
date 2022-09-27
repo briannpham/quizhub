@@ -39,15 +39,24 @@ const Card = ({ card }) => {
       .catch(err => console.log(err));
   };
 
+  const handleCancel = () => {
+    setQuestion(card.question);
+    setAnswer(card.answer);
+    setIsEditing(!isEditing);
+  };
+
   if (isEditing) {
     return (
       <div className="card">
-        <div className="cardHeader editting">
+        <div className="cardHeader editing">
           <i className="fa-solid fa-trash" onClick={handleDelete}></i>
-          <p onClick={handleUpdate} className="finish-editing">Done</p>
+          <div>
+            <p onClick={handleUpdate} className="finish-editing">Update</p>
+            <p onClick={handleCancel} className="finish-editing">Cancel</p>
+          </div>
         </div>
         <div className="form-control editing">
-          <label htmlFor="question-editing">Question:</label>
+          <label htmlFor="question-editing">Question/Front:</label>
           <input 
             id="question-editing" 
             className="questions" 
@@ -57,7 +66,7 @@ const Card = ({ card }) => {
           />
         </div>
         <div className="form-control editing">
-          <label htmlFor="answer-editing">Answer:</label>
+          <label htmlFor="answer-editing">Answer/Back:</label>
           <textarea 
             id="answer-editing" 
             className="answers" 
