@@ -61,7 +61,7 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middlzeware error',
-    status: 500,
+    status: 400,
     message: { err: 'An error occurred. In global error handler' },
   };
   const errorObj = Object.assign({}, defaultErr, err);
