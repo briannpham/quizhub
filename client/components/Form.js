@@ -17,14 +17,14 @@ const Form = ({ showModal, setShowModal }) => {
       .catch(err => console.log(err));
     setQuestion('');
     setAnswer('');
-    // setShowModal(!showModal);
+    setShowModal(false);
   };
 
   return (
     <form>
       <h2>Add Flashcard</h2>
       <div className="form-control">
-        <label htmlFor="question">Question:</label>
+        <label htmlFor="question">Question/Front:</label>
         <input 
           name="question" 
           id="question" 
@@ -34,7 +34,7 @@ const Form = ({ showModal, setShowModal }) => {
         />
       </div>
       <div className="form-control">
-        <label htmlFor="answer">Answer:</label>
+        <label htmlFor="answer">Answer/Back:</label>
         <textarea 
           id="answer" 
           name="answer" 
@@ -47,7 +47,7 @@ const Form = ({ showModal, setShowModal }) => {
         </textarea>
       </div>
       <button type="button" id="save-btn" onClick={handleSave}>Save</button>
-      <button type="button" id="close-btn">Close</button>
+      <button type="button" id="close-btn" onClick={() => setShowModal(false)}>Close</button>
     </form>
   );
 };

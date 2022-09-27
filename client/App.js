@@ -6,7 +6,7 @@ import axios from 'axios';
 import ACTIONS from './constants/cardsConstant';
 
 const App = () => {
-  // const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { cards, dispatch } = useCardsContext();
   // console.log('rerender')
 
@@ -21,14 +21,25 @@ const App = () => {
   return (
     <div>
       <h1 id="heading">Flashcard App</h1>
-      <Form />
-      {cards && <CardContainer cards={cards} />}
       {/* <div className="btn-container">
         <button className="show-modal" onClick={() => setShowModal(!showModal)}>
           {!showModal ? 'ADD' : 'CLOSE'}
         </button>
-      </div>
-      {showModal ? <Form showModal={showModal} setShowModal={setShowModal}/> : <CardContainer cards={cards} handleDelete={handleDelete}/>} */}
+      </div> */}
+      {showModal ? <Form showModal={showModal} setShowModal={setShowModal}/>
+        :
+        <div>
+          <div className="btn-container">
+            <button className="show-modal" onClick={() => setShowModal(!showModal)}>
+              ADD
+            </button>
+          </div> 
+          <div>
+            <h2>Total Cards: {cards.length}</h2>
+            <CardContainer cards={cards}/>
+          </div>
+        </div>
+      }
     </div>
   );
 };
