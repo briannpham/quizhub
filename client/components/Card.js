@@ -1,9 +1,10 @@
 import React, { useState }  from 'react';
 
-const Card = ({ question, answer }) => {
+const Card = ({ card, handleDelete }) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const id = card._id;
 
   const handleIsEditing = () => {
     setIsEditing(!isEditing);
@@ -16,10 +17,7 @@ const Card = ({ question, answer }) => {
   const handleCheck = () => {
     setIsChecked(!isChecked);
   };
-
-  const handleDelete = () => {
-    // move to parent component
-  };
+  
 
   if (isEditing) {
     return (
@@ -33,7 +31,7 @@ const Card = ({ question, answer }) => {
             id="question-editing" 
             className="questions" 
             name="question-editing" 
-            value={question}
+            value={card.question}
           />
         </div>
         <div className="form-control editing">
@@ -45,14 +43,14 @@ const Card = ({ question, answer }) => {
             rows={5} 
             cols={50}
           >
-            {answer}
+            {card.answer}
           </textarea>
         </div>
         <div className='cardButtons'>
           <span onClick={handleCheck}>
             {!isChecked ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
           </span>
-          <i className="fa-solid fa-trash" onClick={handleDelete}></i>
+          <i className="fa-solid fa-trash" onClick={() => handleDelete(id)}></i>
         </div>
       </div>
     );
@@ -65,13 +63,13 @@ const Card = ({ question, answer }) => {
         <i className="fa-regular fa-pen-to-square" onClick={handleIsEditing}></i>
         {/* <i class="fa-solid fa-ellipsis"></i> */}
       </div>
-      <p className={showAnswer ? 'answer' : 'question'}>{showAnswer ? answer : question}</p>
+      <p className={showAnswer ? 'answer' : 'question'}>{showAnswer ? card.answer : card.question}</p>
       {/* {showAnswer ? <p className='answer'>{answer}</p> : <p className='question'>{question}</p>} */}
       <div className='cardButtons'>
         <span onClick={handleCheck}>
           {!isChecked ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
         </span>
-        <i className="fa-solid fa-trash" onClick={handleDelete}></i>
+        <i className="fa-solid fa-trash" onClick={() => handleDelete(id)}></i>
       </div>
     </div>
   );
