@@ -1,7 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useCardsContext } from "../hooks/useCardsContext";
+import ACTIONS from "../constants/cardsConstant";
 
 const Form = ({ showModal, setShowModal }) => {
+  const { dispatch } = useCardsContext();
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
 
@@ -10,9 +13,11 @@ const Form = ({ showModal, setShowModal }) => {
       question,
       answer
     })
-      .then(res => res.data)
+      .then(res => dispatch({ type: ACTIONS.CREATE_CARD, payload: res.data }))
       .catch(err => console.log(err));
-    setShowModal(!showModal);
+    setQuestion('');
+    setAnswer('');
+    // setShowModal(!showModal);
   };
 
   return (

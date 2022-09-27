@@ -1,10 +1,14 @@
 import React, { useState }  from 'react';
+import { useCardsContext } from '../hooks/useCardsContext';
+import axios from 'axios';
+import ACTIONS from '../constants/cardsConstant';
 
-const Card = ({ card, handleDelete }) => {
+
+const Card = ({ card }) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const id = card._id;
+  const { dispatch } = useCardsContext();
 
   const handleIsEditing = () => {
     setIsEditing(!isEditing);
@@ -17,7 +21,13 @@ const Card = ({ card, handleDelete }) => {
   const handleCheck = () => {
     setIsChecked(!isChecked);
   };
-  
+
+  const handleDelete = () => {
+    console.log('running handleDelte');
+    axios.delete(`/api/cards/${card._id}`)
+      .then(res => dispatch({ type: ACTIONS.DELETE_CARD, payload: res.data }))
+      .catch(err => console.log(err));
+  };
 
   if (isEditing) {
     return (
@@ -50,7 +60,7 @@ const Card = ({ card, handleDelete }) => {
           <span onClick={handleCheck}>
             {!isChecked ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
           </span>
-          <i className="fa-solid fa-trash" onClick={() => handleDelete(id)}></i>
+          <i className="fa-solid fa-trash" onClick={handleDelete}></i>
         </div>
       </div>
     );
@@ -69,7 +79,7 @@ const Card = ({ card, handleDelete }) => {
         <span onClick={handleCheck}>
           {!isChecked ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
         </span>
-        <i className="fa-solid fa-trash" onClick={() => handleDelete(id)}></i>
+        <i className="fa-solid fa-trash" onClick={handleDelete}></i>
       </div>
     </div>
   );
