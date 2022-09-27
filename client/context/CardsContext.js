@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import React, { createContext, useReducer } from "react";
 import ACTIONS from "../constants/cardsConstant";
 
@@ -10,20 +9,20 @@ const intialState = {
 
 export const cardsReducer = (state, action) => {
   switch(action.type) {
-    case ACTIONS.LOAD_CARDS:
-      return {
-        cards: action.payload
-      };
-    case ACTIONS.CREATE_CARD:
-      return {
-        cards: [action.payload, ...state.cards]
-      };
-    case ACTIONS.DELETE_CARD:
-      return {
-        cards: state.cards.filter(card => card._id !== action.payload._id)
-      };
-    default:
-      return state;
+  case ACTIONS.LOAD_CARDS:
+    return {
+      cards: action.payload
+    };
+  case ACTIONS.CREATE_CARD:
+    return {
+      cards: [action.payload, ...state.cards]
+    };
+  case ACTIONS.DELETE_CARD:
+    return {
+      cards: state.cards.filter(card => card._id !== action.payload._id)
+    };
+  default:
+    return state;
   }
 };
 

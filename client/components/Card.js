@@ -1,6 +1,7 @@
 import React, { useState }  from 'react';
 import { useCardsContext } from '../hooks/useCardsContext';
 import axios from 'axios';
+import moment from 'moment';
 import ACTIONS from '../constants/cardsConstant';
 
 
@@ -32,7 +33,8 @@ const Card = ({ card }) => {
   if (isEditing) {
     return (
       <div className="card">
-        <div className="cardHeader">
+        <div className="cardHeader editting">
+          <i className="fa-solid fa-trash" onClick={handleDelete}></i>
           <p onClick={() => setIsEditing(!isEditing)} className="finish-editing">Done</p>
         </div>
         <div className="form-control editing">
@@ -56,11 +58,11 @@ const Card = ({ card }) => {
             {card.answer}
           </textarea>
         </div>
-        <div className='cardButtons'>
+        <div className='cardBottom'>
           <span onClick={handleCheck}>
             {!isChecked ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
           </span>
-          <i className="fa-solid fa-trash" onClick={handleDelete}></i>
+          <span className="date">{moment(card.createdAt).fromNow()}</span>
         </div>
       </div>
     );
@@ -70,16 +72,17 @@ const Card = ({ card }) => {
     <div className='card'>
       <div className='cardHeader'>
         <p className='showAnswer' onClick={handleShowAnswer}>Check Answer</p>
-        <i className="fa-regular fa-pen-to-square" onClick={handleIsEditing}></i>
-        {/* <i class="fa-solid fa-ellipsis"></i> */}
+        <div className='icons'>
+          <i className="fa-solid fa-trash" onClick={handleDelete}></i>
+          <i className="fa-regular fa-pen-to-square" onClick={handleIsEditing}></i>
+        </div>
       </div>
       <p className={showAnswer ? 'answer' : 'question'}>{showAnswer ? card.answer : card.question}</p>
-      {/* {showAnswer ? <p className='answer'>{answer}</p> : <p className='question'>{question}</p>} */}
-      <div className='cardButtons'>
+      <div className='cardBottom'>
         <span onClick={handleCheck}>
           {!isChecked ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
         </span>
-        <i className="fa-solid fa-trash" onClick={handleDelete}></i>
+        <span className="date">{moment(card.createdAt).fromNow()}</span>
       </div>
     </div>
   );
