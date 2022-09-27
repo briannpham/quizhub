@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 
 const Form = () => {
   const [question, setQuestion] = useState('');
@@ -12,13 +12,13 @@ const Form = () => {
       },
       body: JSON.stringify({ question: question, answer: answer })
     })
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.log(err))
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
 
     setAnswer('');
     setQuestion('');
-  }
+  };
 
   return (
     <form>
@@ -49,7 +49,7 @@ const Form = () => {
       <button type="button" id="save-btn" onClick={handleSave}>Save</button>
       <button type="button" id="close-btn">Close</button>
     </form>
-  )
-}
+  );
+};
 
-export default Form
+export default Form;

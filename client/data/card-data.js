@@ -34,4 +34,4 @@ export const cards = [
     question: 'What is the best coding bootcamp in the US?',
     answer: 'Codesmith' 
   }
-]
+];

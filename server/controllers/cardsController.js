@@ -18,7 +18,7 @@ cardsController.createCard = (req, res, next) => {
   console.log('Creating cards in cardsController.loadCards');
   // console.log(req.body);
   res.locals.data = req.body;
-  console.log('in controller')
+  console.log('in controller');
   console.log(res.locals.data);
   next();
 };

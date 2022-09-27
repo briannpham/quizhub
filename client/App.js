@@ -23,6 +23,6 @@ const App = () => {
       {showModal ? <Form /> : <CardContainer />}
     </div>
   );
-}
+};
 
 export default App;
