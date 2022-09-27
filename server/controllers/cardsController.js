@@ -8,7 +8,7 @@ const cardsController = {};
 cardsController.loadCards = async (req, res, next) => {
   try {
     console.log('Loading cards in cardsController.loadCards'.green);
-    const cards = await Card.find();
+    const cards = await Card.find().sort({ createdAt: -1 });
 
     res.locals.cards = cards;
     next();
