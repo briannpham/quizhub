@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Card = require('../models/cardModel');
-// model
 
 const cardsController = {};
 
@@ -10,7 +9,7 @@ cardsController.loadCards = async (req, res, next) => {
   try {
     console.log('Loading cards in cardsController.loadCards'.green);
     const cards = await Card.find();
-    // console.log(cards);
+
     res.locals.cards = cards;
     next();
   } catch (error) {
@@ -25,7 +24,6 @@ cardsController.createCard = async (req, res, next) => {
   try {
     console.log('Creating card in cardsController.loadCards'.green);
     const { question, answer } = req.body;
-    // console.log(req.body);
 
     if (!question || !answer) {
       return next({
@@ -48,6 +46,12 @@ cardsController.updateCard = async (req, res, next) => {
   try {
     console.log('Updating card in cardsController.updateCard'.green);
     const id = req.params.id;
+
+    // check if /:id is a valid ObjectId in database
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: { err: 'Invalid ID. No such card exists' } });
+    }
+
     const updatedQuestion = req.body.question;
     const updatedAnswer = req.body.answer;
 
@@ -64,6 +68,10 @@ cardsController.updateCard = async (req, res, next) => {
       { new: true }
     );
 
+    if (!updatedCard) {
+      return res.status(404).json({ message: { err: 'No such card exists' } });
+    }
+
     res.locals.updatedCard = updatedCard;
     next();
   } catch (error) {
@@ -78,8 +86,19 @@ cardsController.deleteCard = async (req, res, next) => {
   try {
     console.log('Deleting card in cardsController.deleteCard'.green);
     const id = req.params.id;
-    const card = await Card.findOneAndDelete({ _id: id });
-    res.locals.deletedCard = card;
+
+    // check if /:id is a valid ObjectId in database
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: { err: 'Invalid ID. No such card exists' } });
+    }
+
+    const deletedCard = await Card.findOneAndDelete({ _id: id });
+
+    if (!deletedCard) {
+      return res.status(404).json({ message: { err: 'No such card exists' } });
+    }
+
+    res.locals.deletedCard = deletedCard;
     next();
   } catch (error) {
     res.status(404).json({ message: { err: error.message } });
