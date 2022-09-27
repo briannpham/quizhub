@@ -17,6 +17,21 @@ export const cardsReducer = (state, action) => {
     return {
       cards: [action.payload, ...state.cards]
     };
+  case ACTIONS.UPDATE_CARD: 
+    const newCards = state.cards.map(card => {
+      if (card._id === action.payload._id) {
+        return {
+          ...card,
+          question: action.payload.question,
+          answer: action.payload.answer
+        };
+      } else {
+        return card;
+      }
+    });
+    return {
+      cards: newCards
+    };
   case ACTIONS.DELETE_CARD:
     return {
       cards: state.cards.filter(card => card._id !== action.payload._id)
