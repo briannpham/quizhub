@@ -1,4 +1,4 @@
-import React, { useState }  from 'react'
+import React, { useState }  from 'react';
 
 const Card = ({ question, answer }) => {
   const [showAnswer, setShowAnswer] = useState(false);
@@ -7,19 +7,19 @@ const Card = ({ question, answer }) => {
 
   const handleIsEditing = () => {
     setIsEditing(!isEditing);
-  }
+  };
 
   const handleShowAnswer = () => {
     setShowAnswer(!showAnswer);
-  }
+  };
 
   const handleCheck = () => {
     setIsChecked(!isChecked);
-  }
+  };
 
   const handleDelete = () => {
-      // move to parent component
-  }
+    // move to parent component
+  };
 
   if (isEditing) {
     return (
@@ -50,31 +50,31 @@ const Card = ({ question, answer }) => {
         </div>
         <div className='cardButtons'>
           <span onClick={handleCheck}>
-            {!isChecked ? <i class="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
+            {!isChecked ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
           </span>
           <i className="fa-solid fa-trash" onClick={handleDelete}></i>
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className='card'>
       <div className='cardHeader'>
         <p className='showAnswer' onClick={handleShowAnswer}>Check Answer</p>
-        <i class="fa-regular fa-pen-to-square" onClick={handleIsEditing}></i>
+        <i className="fa-regular fa-pen-to-square" onClick={handleIsEditing}></i>
         {/* <i class="fa-solid fa-ellipsis"></i> */}
       </div>
       <p className={showAnswer ? 'answer' : 'question'}>{showAnswer ? answer : question}</p>
       {/* {showAnswer ? <p className='answer'>{answer}</p> : <p className='question'>{question}</p>} */}
       <div className='cardButtons'>
         <span onClick={handleCheck}>
-          {!isChecked ? <i class="fa-regular fa-circle-check" ></i> : <i class="fa-solid fa-circle-check checked"></i>}
+          {!isChecked ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
         </span>
-        <i class="fa-solid fa-trash" onClick={handleDelete}></i>
+        <i className="fa-solid fa-trash" onClick={handleDelete}></i>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;

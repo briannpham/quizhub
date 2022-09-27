@@ -1,6 +1,6 @@
-import React from 'react'
-import Card from './Card'
-import { cards } from '../data/card-data'
+import React from 'react';
+import Card from './Card';
+import { cards } from '../data/card-data';
 
 const CardContainer = () => {
   
@@ -8,7 +8,7 @@ const CardContainer = () => {
     <div className='cardContainer'>
       {cards.map(card => <Card key={card.id} question={card.question} answer={card.answer}/>)}
     </div>
-  )
-}
+  );
+};
 
-export default CardContainer
+export default CardContainer;

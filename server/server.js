@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 
 const app = express();
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 3000;
 
 // routers
@@ -15,7 +16,7 @@ const cardsRouter = require('./routes/cards.js');
 const logger = (req, res, next) => {
   console.log(`${req.protocol}://${req.get('host')}${req.originalUrl} ${moment().format()}`);
   next();
-}
+};
 app.use(logger);
 
 
@@ -27,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Connect to database
-const MONGO_URI = 'mongodb+srv://brpham13:brian123456@cluster0.7jepfh4.mongodb.net/?retryWrites=true&w=majority'
+const MONGO_URI = 'mongodb+srv://brpham13:brian123456@cluster0.7jepfh4.mongodb.net/?retryWrites=true&w=majority';
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connect to Mongo DB'))
@@ -43,7 +44,8 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 // handle request for static files
-// app.use(express.static(path.join(__dirname, '../client')));
+// eslint-disable-next-line no-undef
+app.use(express.static(path.join(__dirname, '../client')));
 
 
 // define route handlers
@@ -65,7 +67,7 @@ app.use((err, req, res, next) => {
   const errorObj = Object.assign({}, defaultErr, err);
   console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
-})
+});
 
 // start server
 app.listen(PORT, () => {
