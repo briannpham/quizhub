@@ -8,7 +8,6 @@ import ACTIONS from './constants/cardsConstant';
 const App = () => {
   const [showModal, setShowModal] = useState(false);
   const { cards, dispatch } = useCardsContext();
-  // console.log('rerender')
 
   // Loading Flashcards upon opening App
   useEffect(() => {
@@ -20,26 +19,23 @@ const App = () => {
 
   return (
     <div>
-      <h1 id="heading">Flashcard App</h1>
-      {/* <div className="btn-container">
-        <button className="show-modal" onClick={() => setShowModal(!showModal)}>
-          {!showModal ? 'ADD' : 'CLOSE'}
-        </button>
-      </div> */}
-      {showModal ? <Form showModal={showModal} setShowModal={setShowModal}/>
-        :
-        <div>
-          <div className="btn-container">
-            <button className="show-modal" onClick={() => setShowModal(!showModal)}>
-              ADD
-            </button>
-          </div> 
+      <div id="navbar">Flashcard App</div>
+      <div className='container'>
+        {showModal ? <Form showModal={showModal} setShowModal={setShowModal}/>
+          :
           <div>
-            <h2>Total Cards: {cards.length}</h2>
-            <CardContainer cards={cards}/>
+            <div className="btn-container">
+              <button className="show-modal" onClick={() => setShowModal(!showModal)}>
+              ADD
+              </button>
+            </div> 
+            <div>
+              <h2>Total Cards: {cards.length}</h2>
+              <CardContainer cards={cards}/>
+            </div>
           </div>
-        </div>
-      }
+        }
+      </div>
     </div>
   );
 };
