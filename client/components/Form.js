@@ -7,17 +7,24 @@ const Form = ({ showModal, setShowModal }) => {
   const { dispatch } = useCardsContext();
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
+  const [error, setError] = useState(null);
 
   const handleSave = () => {
     axios.post('/api/cards', {
       question,
       answer
     })
-      .then(res => dispatch({ type: ACTIONS.CREATE_CARD, payload: res.data }))
-      .catch(err => console.log(err));
-    setQuestion('');
-    setAnswer('');
-    setShowModal(false);
+      .then(res => {
+        dispatch({ type: ACTIONS.CREATE_CARD, payload: res.data });
+        setQuestion('');
+        setAnswer('');
+        setShowModal(false);
+        setError(null);
+      })
+      .catch(err => {
+        const error = err.response.data.err.split('.')[0];
+        setError(error);
+      });
   };
 
   return (
@@ -46,6 +53,7 @@ const Form = ({ showModal, setShowModal }) => {
         >
         </textarea>
       </div>
+      {error && <div id="error-message">{error}</div>}
       <button type="button" id="save-btn" onClick={handleSave}>Save</button>
       <button type="button" id="close-btn" onClick={() => setShowModal(false)}>Close</button>
     </form>

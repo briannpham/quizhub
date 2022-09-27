@@ -1,6 +1,5 @@
 import React from 'react';
 import Card from './Card';
-// import { cards } from '../data/card-data';
 
 const CardContainer = ({ cards, totalCards }) => {
   console.log('rerender');

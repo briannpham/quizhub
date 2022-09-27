@@ -117,6 +117,15 @@ h2 {
   cursor: pointer;
 }
 
+#error-message {
+  border: 1px solid red;
+  border-radius: 5px;
+  padding: 10px 5px;
+  background: rgba(255, 0, 0, 0.203);
+  font-size: 0.8rem;
+  color: rgb(224, 63, 63);
+}
+
 /*-----------------
 CARD CONTAINER
 -------------------*/
