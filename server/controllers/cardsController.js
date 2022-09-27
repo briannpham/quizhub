@@ -8,9 +8,9 @@ const cardsController = {};
 // @route:   GET /api/cards
 cardsController.loadCards = async (req, res, next) => {
   try {
-    console.log('Loading cards in cardsController.loadCards');
+    console.log('Loading cards in cardsController.loadCards'.green);
     const cards = await Card.find();
-    console.log(cards);
+    // console.log(cards);
     res.locals.cards = cards;
     next();
   } catch (error) {
@@ -23,9 +23,9 @@ cardsController.loadCards = async (req, res, next) => {
 // @route:   POST /api/cards
 cardsController.createCard = async (req, res, next) => {
   try {
-    console.log('Creating cards in cardsController.loadCards');
+    console.log('Creating card in cardsController.loadCards'.green);
     const { question, answer } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const newCard = await Card.create({ question, answer });
     res.locals.newCard = newCard;
     console.log(res.locals.newCard);
@@ -39,6 +39,7 @@ cardsController.createCard = async (req, res, next) => {
 // @route:   PATCH /api/cards/:id
 cardsController.updateCard = async (req, res, next) => {
   try {
+    console.log('Updating card in cardsController.updateCard'.green);
     const id = req.params.id;
     const updatedQuestion = req.body.question;
     const updatedAnswer = req.body.answer;
@@ -62,6 +63,7 @@ cardsController.updateCard = async (req, res, next) => {
 // @route:   DELETE /api/cards/:id
 cardsController.deleteCard = async (req, res, next) => {
   try {
+    console.log('Deleting card in cardsController.deleteCard'.green);
     const id = req.params.id;
     const card = await Card.findOneAndDelete({ _id: id });
     res.locals.deletedCard = card;

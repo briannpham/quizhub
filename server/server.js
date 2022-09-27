@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const colors = require('colors');
 // const cookieParser = require('cookie-parser');
 // const cors = require('cors');
 const moment = require('moment');
@@ -14,7 +15,7 @@ const cardsRouter = require('./routes/cards.js');
 
 // logger
 const logger = (req, res, next) => {
-  console.log(`${req.protocol}://${req.get('host')}${req.originalUrl} ${moment().format()}`);
+  console.log(`${req.method.yellow}`, `${req.protocol}://${req.get('host').yellow}${req.originalUrl.brightCyan}`, `${moment().format().green}`);
   next();
 };
 app.use(logger);
