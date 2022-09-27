@@ -26,6 +26,13 @@ cardsController.createCard = async (req, res, next) => {
     console.log('Creating card in cardsController.loadCards'.green);
     const { question, answer } = req.body;
     // console.log(req.body);
+
+    if (!question || !answer) {
+      return next({
+        message: { err: 'Missing required input fields. ERROR in cardsController.createCard' }
+      });
+    }
+
     const newCard = await Card.create({ question, answer });
     res.locals.newCard = newCard;
     console.log(res.locals.newCard);
@@ -43,6 +50,12 @@ cardsController.updateCard = async (req, res, next) => {
     const id = req.params.id;
     const updatedQuestion = req.body.question;
     const updatedAnswer = req.body.answer;
+
+    if (!updatedQuestion || !updatedAnswer) {
+      return next({
+        message: { err: 'Missing required input field. ERROR in cardsController.updateCard' }
+      });
+    }
 
     const update = { question: updatedQuestion, answer: updatedAnswer };
     const updatedCard = await Card.findOneAndUpdate(
