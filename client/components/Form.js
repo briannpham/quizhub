@@ -1,23 +1,18 @@
+import axios from "axios";
 import React, { useState } from "react";
 
-const Form = () => {
+const Form = ({ showModal, setShowModal }) => {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
 
   const handleSave = () => {
-    fetch('/api/cards/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ question: question, answer: answer })
+    axios.post('/api/cards', {
+      question,
+      answer
     })
-      .then(res => res.json())
-      .then(data => console.log(data))
+      .then(res => res.data)
       .catch(err => console.log(err));
-
-    setAnswer('');
-    setQuestion('');
+    setShowModal(!showModal);
   };
 
   return (
