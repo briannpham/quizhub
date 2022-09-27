@@ -9,11 +9,11 @@ const Card = ({ card }) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const { dispatch } = useCardsContext();
 
-  const handleIsEditing = () => {
-    setIsEditing(!isEditing);
-  };
+  const [question, setQuestion] = useState(card.question);
+  const [answer, setAnswer] = useState(card.answer);
+
+  const { dispatch } = useCardsContext();
 
   const handleShowAnswer = () => {
     setShowAnswer(!showAnswer);
@@ -23,8 +23,17 @@ const Card = ({ card }) => {
     setIsChecked(!isChecked);
   };
 
+  const handleUpdate = () => {
+    setIsEditing(prevState => !prevState);  // another way of using setIsEditting(!isEditting)
+    axios.patch(`/api/cards/${card._id}`, {
+      question,
+      answer
+    })
+      .then(res => dispatch({ type: ACTIONS.UPDATE_CARD, payload: res.data }))
+      .catch(err => console.log(err));
+  };
+
   const handleDelete = () => {
-    console.log('running handleDelte');
     axios.delete(`/api/cards/${card._id}`)
       .then(res => dispatch({ type: ACTIONS.DELETE_CARD, payload: res.data }))
       .catch(err => console.log(err));
@@ -35,7 +44,7 @@ const Card = ({ card }) => {
       <div className="card">
         <div className="cardHeader editting">
           <i className="fa-solid fa-trash" onClick={handleDelete}></i>
-          <p onClick={() => setIsEditing(!isEditing)} className="finish-editing">Done</p>
+          <p onClick={handleUpdate} className="finish-editing">Done</p>
         </div>
         <div className="form-control editing">
           <label htmlFor="question-editing">Question:</label>
@@ -43,7 +52,8 @@ const Card = ({ card }) => {
             id="question-editing" 
             className="questions" 
             name="question-editing" 
-            value={card.question}
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
           />
         </div>
         <div className="form-control editing">
@@ -54,8 +64,9 @@ const Card = ({ card }) => {
             name="answer-editing" 
             rows={5} 
             cols={50}
+            onChange={(e) => setAnswer(e.target.value)}
           >
-            {card.answer}
+            {answer}
           </textarea>
         </div>
         <div className='cardBottom'>
@@ -74,7 +85,7 @@ const Card = ({ card }) => {
         <p className='showAnswer' onClick={handleShowAnswer}>Check Answer</p>
         <div className='icons'>
           <i className="fa-solid fa-trash" onClick={handleDelete}></i>
-          <i className="fa-regular fa-pen-to-square" onClick={handleIsEditing}></i>
+          <i className="fa-regular fa-pen-to-square" onClick={() => setIsEditing(!isEditing)}></i>
         </div>
       </div>
       <p className={showAnswer ? 'answer' : 'question'}>{showAnswer ? card.answer : card.question}</p>
