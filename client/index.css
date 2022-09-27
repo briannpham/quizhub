@@ -6,14 +6,23 @@
 }
 
 body {
-  padding: 0 30px;
   background: rgb(224 226 241 / 10%);
 }
 
-#heading {
-  margin-top: 20px;
+.container {
+  padding: 0 30px;
+}
+
+#navbar {
+  height: 60px;
+  margin-top: 0;
   margin-bottom: 30px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(99, 99, 223);
+  color: white;
+  font-size: 2rem;
 }
 
 /*-----------------
