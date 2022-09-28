@@ -271,50 +271,41 @@ input.answers {
 }
 
 /*-----------------
-CARD (EDITING)
+REGISTER / SIGIN FORM
 -------------------*/
 
-#sign-in {
-  max-width: 300px;
-  height: 380px;
-  margin: 60px auto;
-  border: 1px solid rgb(221, 197, 197);
-  border-radius: 5px;
-  padding: 30px;
-  background: white;
-  box-shadow: 2px 2px 2px 1px rgb(210, 194, 194);
-  /* display: flex;
-  flex-direction: column; */
-}
-
-#sign-in h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-#sign-in-form {
-  /* height: 300px; */
+.form {
+  max-width: 400px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 50px;
 }
 
-#sign-in-form .form-control {
+.form h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form .form-control {
   margin: 0;
 }
 
+.form label::after {
+  content: '*';
+}
 
-#sign-in-form input {
+.form input {
   height: 40px;
   font-weight: 300;
 
 }
-#sign-in-form input[type="text"],
-#sign-in-form input[type="password"] {
+.form input[type="text"],
+.form input[type="password"] {
   font-size: 1.1rem;
 }
 
-#sign-in-form button {
+.form button {
   height: 35px;
   border-radius: 5px;
   border: 1px solid black;
@@ -322,13 +313,25 @@ CARD (EDITING)
   color: white;
 }
 
-#sign-in-form button:hover {
+.form button:hover {
   cursor: pointer;
   background: rgb(71, 71, 231);
 }
 
+#register, #sign-in {
+  align-self: flex-end;
+  margin-top: -30px;
+  color: rgba(132, 23, 233, 0.788);
+  font-weight: 300;
+  text-decoration: underline;
+}
+
+#register:hover, #sign-in:hover {
+  color: rgb(126, 0, 244);
+  cursor: pointer;
+}
+
 #copyright {
-  margin-top: 50px;
   text-align: center;
   font-weight: 300;
 }

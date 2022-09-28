@@ -6,6 +6,7 @@ module.exports = {
   output: {
     // eslint-disable-next-line no-undef
     path: path.resolve(__dirname, 'build'),
+    publicPath: '/',
     filename: 'bundle.js'
   },
   mode: 'development',
@@ -43,9 +44,11 @@ module.exports = {
     ]
   },
   devServer: {
+    historyApiFallback: true,
     static: {
       // eslint-disable-next-line no-undef
       directory: path.join(__dirname, 'build'),
+      publicPath: '/',
     },
     proxy: {
       '/api': 'http://localhost:3000',
@@ -53,7 +56,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './index.html',
+      template: './client/index.html',
     }),
   ],
 };
