@@ -44,12 +44,18 @@ userController.register = async (req, res, next) => {
       return res.status(404).json({ message: { err: 'Invalid user data' } });
     }
 
+    // Generate token after register
+    const token = jwt.sign({ email: user.email, _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
     // Only serve these fields back to the frontend (i.e. without password)
     res.locals.user = {
       _id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
-      email: user.email
+      email: user.email,
+      token: token
     };
 
     next();
@@ -81,12 +87,18 @@ userController.login = async (req, res, next) => {
 
     // Compare user's password with req.body.password
     if (await (bcrypt.compare(password, user.password))) {
+
+      // Generate token after login
+      const token = jwt.sign({ email: user.email, _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+
       res.locals.user = {
         _id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        password: user.password
+        token: token
       };
 
       next();
@@ -105,6 +117,14 @@ userController.login = async (req, res, next) => {
 userController.getMe = async (req, res, next) => {
   console.log('Me in userController.getMe'.green);
   next();
+};
+
+
+// Generate JWT
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
 };
 
 module.exports = userController;
