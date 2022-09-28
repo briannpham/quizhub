@@ -8,7 +8,8 @@ const cardsController = {};
 cardsController.loadCards = async (req, res, next) => {
   try {
     console.log('Loading cards in cardsController.loadCards'.green);
-    const cards = await Card.find().sort({ createdAt: -1 });
+    console.log(req.user);
+    const cards = await Card.find({ user: req.user.id }).sort({ createdAt: -1 });
 
     res.locals.cards = cards;
     next();
@@ -49,7 +50,9 @@ cardsController.updateCard = async (req, res, next) => {
 
     // check if /:id is a valid ObjectId in database
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({ message: { err: 'Invalid ID. No such card exists' } });
+      return next({
+        message: { err: 'Invalid ID. No such card exists. ERROR in cardsController.updateCard' }
+      });
     }
 
     if (!req.body.question || !req.body.answer) {
@@ -71,7 +74,9 @@ cardsController.updateCard = async (req, res, next) => {
     );
 
     if (!updatedCard) {
-      return res.status(404).json({ message: { err: 'No such card exists' } });
+      return next({
+        message: { err: 'No such card exists. ERROR in cardsController.updateCard' }
+      });
     }
 
     res.locals.updatedCard = updatedCard;
@@ -91,13 +96,17 @@ cardsController.deleteCard = async (req, res, next) => {
 
     // check if /:id is a valid ObjectId in database
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({ message: { err: 'Invalid ID. No such card exists' } });
+      return next({
+        message: { err: 'Invalid ID. No such card exists. ERROR in cardsController.deleteCard' }
+      });
     }
 
     const deletedCard = await Card.findOneAndDelete({ _id: id });
 
     if (!deletedCard) {
-      return res.status(404).json({ message: { err: 'No such card exists' } });
+      return next({
+        message: { err: 'No such card exists. ERROR in cardsController.updateCard' }
+      });
     }
 
     res.locals.deletedCard = deletedCard;
