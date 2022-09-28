@@ -28,7 +28,7 @@ const Form = ({ showModal, setShowModal }) => {
   };
 
   return (
-    <form>
+    <form id='add-card-form'>
       <h2>Add Flashcard</h2>
       <div className="form-control">
         <label htmlFor="question">Question/Front:</label>

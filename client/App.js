@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import CardContainer from './components/CardContainer';
+// import { BrowserRouter }
+import axios from 'axios';
 import { useCardsContext } from './hooks/useCardsContext';
 import Form from './components/Form';
-import axios from 'axios';
+import CardContainer from './components/CardContainer';
+import SignIn from './components/SignIn';
 import ACTIONS from './constants/cardsConstant';
 
 const App = () => {
@@ -20,6 +22,7 @@ const App = () => {
   return (
     <div>
       <div id="navbar">Flashcard App</div>
+      <SignIn />
       <div className='container'>
         {showModal ? <Form showModal={showModal} setShowModal={setShowModal}/>
           :

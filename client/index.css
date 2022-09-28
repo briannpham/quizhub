@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
 
 * {
   margin: 0;
@@ -49,7 +49,7 @@ ADD/CLOSE FORM BUTTON
 FORM
 -------------------*/
 
-form {
+#add-card-form {
   /* height: 350px; */
   width: 300px;
   border: 1px solid rgb(221, 197, 197);
@@ -268,4 +268,67 @@ input.answers {
 
 .bottom-icons.editing span {
   height: 25px;
+}
+
+/*-----------------
+CARD (EDITING)
+-------------------*/
+
+#sign-in {
+  max-width: 300px;
+  height: 380px;
+  margin: 60px auto;
+  border: 1px solid rgb(221, 197, 197);
+  border-radius: 5px;
+  padding: 30px;
+  background: white;
+  box-shadow: 2px 2px 2px 1px rgb(210, 194, 194);
+  /* display: flex;
+  flex-direction: column; */
+}
+
+#sign-in h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#sign-in-form {
+  /* height: 300px; */
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+#sign-in-form .form-control {
+  margin: 0;
+}
+
+
+#sign-in-form input {
+  height: 40px;
+  font-weight: 300;
+
+}
+#sign-in-form input[type="text"],
+#sign-in-form input[type="password"] {
+  font-size: 1.1rem;
+}
+
+#sign-in-form button {
+  height: 35px;
+  border-radius: 5px;
+  border: 1px solid black;
+  background: rgb(99, 99, 223);
+  color: white;
+}
+
+#sign-in-form button:hover {
+  cursor: pointer;
+  background: rgb(71, 71, 231);
+}
+
+#copyright {
+  margin-top: 50px;
+  text-align: center;
+  font-weight: 300;
 }
