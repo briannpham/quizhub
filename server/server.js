@@ -11,7 +11,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // routers
-const cardsRouter = require('./routes/cards.js');
+const cardsRouter = require('./routes/cardsRoute.js');
+const userRouter = require('./routes/userRoute.js');
 
 // logger
 const logger = (req, res, next) => {
@@ -48,6 +49,7 @@ app.use(express.static(path.join(__dirname, '../client')));
 
 // define route handlers
 app.use('/api/cards', cardsRouter);
+app.use('/api/users', userRouter);
 
 
 // catch-all route handler for any requests to an unknown route

@@ -3,8 +3,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const cardSchema = Schema({
-  question: { type: String, required: true },
-  answer: { type: String, required: true },
+  user: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'User',
+  },
+  question: { 
+    type: String, 
+    required: true 
+  },
+  answer: { 
+    type: String, 
+    required: true 
+  },
   status: {
     type: String,
     required: true,
