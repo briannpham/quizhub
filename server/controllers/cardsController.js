@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Card = require('../models/cardModel');
+const User = require('../models/userModel');
 
 const cardsController = {};
 
@@ -9,7 +10,7 @@ cardsController.loadCards = async (req, res, next) => {
   try {
     console.log('Loading cards in cardsController.loadCards'.green);
     console.log(req.user);
-    const cards = await Card.find({ user: req.user.id }).sort({ createdAt: -1 });
+    const cards = await Card.find({ user: req.user._id }).sort({ createdAt: -1 });
 
     res.locals.cards = cards;
     next();
@@ -32,7 +33,7 @@ cardsController.createCard = async (req, res, next) => {
       });
     }
 
-    const newCard = await Card.create({ question, answer });
+    const newCard = await Card.create({ user: req.user._id, question, answer });
     res.locals.newCard = newCard;
     console.log(res.locals.newCard);
     next();
@@ -55,6 +56,14 @@ cardsController.updateCard = async (req, res, next) => {
       });
     }
 
+    const card = await Card.findById(id);
+
+    if (!card) {
+      return next({
+        message: { err: 'No such card exists. ERROR in cardsController.updateCard' }
+      });
+    }
+
     if (!req.body.question || !req.body.answer) {
       return next({
         message: { err: 'Missing required input field. ERROR in cardsController.updateCard' }
@@ -67,17 +76,27 @@ cardsController.updateCard = async (req, res, next) => {
       status: req.body.status,
       favorite: req.body.favorite
     };
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return next({
+        message: { err: 'User not found. ERROR in cardsController.updateCard' }
+      });
+    }
+
+    // User can only update his/her own flashcards
+    if (card.user.toString() !== user._id.toString()) {
+      return next({
+        message: { err: 'User not authorized to update. ERROR in cardsController.updateCard' }
+      });
+    }
+ 
     const updatedCard = await Card.findOneAndUpdate(
       { _id: id },
       update,
       { new: true }
     );
-
-    if (!updatedCard) {
-      return next({
-        message: { err: 'No such card exists. ERROR in cardsController.updateCard' }
-      });
-    }
 
     res.locals.updatedCard = updatedCard;
     next();
@@ -101,13 +120,32 @@ cardsController.deleteCard = async (req, res, next) => {
       });
     }
 
-    const deletedCard = await Card.findOneAndDelete({ _id: id });
+    const card = await Card.findById(id);
 
-    if (!deletedCard) {
+    if (!card) {
       return next({
-        message: { err: 'No such card exists. ERROR in cardsController.updateCard' }
+        message: { err: 'No such card exists. ERROR in cardsController.deleteCard' }
       });
     }
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return next({
+        message: { err: 'User not found. ERROR in cardsController.deleteCard' }
+      });
+    }
+
+    // User can only delete his/her own flashcards
+    if (card.user.toString() !== user._id.toString()) {
+      console.log(card.user);
+      console.log(user._id);
+      return next({
+        message: { err: 'User not authorized to delete. ERROR in cardsController.deleteCard' }
+      });
+    }
+
+    const deletedCard = await Card.findOneAndDelete({ _id: id });
 
     res.locals.deletedCard = deletedCard;
     next();
