@@ -178,20 +178,28 @@ CARD
 }
 
 
-.icons {
+.top-icons {
   height: 100%;
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
+.bottom-icons {
+  display: flex;
+  gap: 10px;
+}
 
 i:hover {
   font-size: 1.5rem;
 }
 
-.fa-circle-check.checked {
+.fa-circle-check {
   color: rgb(122, 122, 233);
+}
+
+.fa-solid.fa-star {
+  color: rgb(222, 230, 79);
 }
 
 .cardBottom {
@@ -249,4 +257,15 @@ input.answers {
 .finish-editing:hover {
   color: rgb(20, 44, 228);
   cursor: pointer;
+}
+
+.cardBottom.editing {
+  /* margin-top: 10px; */
+  font-size: 1.3rem;
+  /* display: flex; */
+  /* justify-content: flex-start; */
+}
+
+.bottom-icons.editing span {
+  height: 25px;
 }

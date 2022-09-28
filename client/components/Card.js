@@ -7,7 +7,6 @@ import ACTIONS from '../constants/cardsConstant';
 
 const Card = ({ card }) => {
   const [showAnswer, setShowAnswer] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   const [question, setQuestion] = useState(card.question);
@@ -17,10 +16,6 @@ const Card = ({ card }) => {
 
   const handleShowAnswer = () => {
     setShowAnswer(!showAnswer);
-  };
-
-  const handleCheck = () => {
-    setIsChecked(!isChecked);
   };
 
   const handleUpdate = () => {
@@ -43,6 +38,25 @@ const Card = ({ card }) => {
     setQuestion(card.question);
     setAnswer(card.answer);
     setIsEditing(!isEditing);
+  };
+
+  const handleFavorite = () => {
+    axios.patch(`/api/cards/${card._id}`, {
+      ...card,
+      favorite: !card.favorite,
+    })
+      .then(res => dispatch({ type: ACTIONS.UPDATE_CARD, payload: res.data }))
+      .catch(err => console.log(err));
+  };
+
+  const handleStatus = () => {
+    const newStatus = card.status === "Not Reviewed" ? "Reviewed" : "Not Reviewed";
+    axios.patch(`/api/cards/${card._id}`, {
+      ...card,
+      status: newStatus,
+    })
+      .then(res => dispatch({ type: ACTIONS.UPDATE_CARD, payload: res.data }))
+      .catch(err => console.log(err));
   };
 
   if (isEditing) {
@@ -78,10 +92,15 @@ const Card = ({ card }) => {
             {answer}
           </textarea>
         </div>
-        <div className='cardBottom'>
-          <span onClick={handleCheck}>
-            {!isChecked ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
-          </span>
+        <div className='cardBottom editing'>
+          <div className='bottom-icons'>
+            <span onClick={handleFavorite}>
+              {card.favorite ? <i className="fa-solid fa-star"></i> : <i className="fa-regular fa-star"></i>}
+            </span>
+            <span onClick={handleStatus}>
+              {card.status === "Not Reviewed" ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
+            </span>
+          </div>
           <span className="date">{moment(card.createdAt).fromNow()}</span>
         </div>
       </div>
@@ -92,16 +111,21 @@ const Card = ({ card }) => {
     <div className='card'>
       <div className='cardHeader'>
         <p className='showAnswer' onClick={handleShowAnswer}>Check Answer</p>
-        <div className='icons'>
+        <div className='top-icons'>
           <i className="fa-solid fa-trash" onClick={handleDelete}></i>
           <i className="fa-regular fa-pen-to-square" onClick={() => setIsEditing(!isEditing)}></i>
         </div>
       </div>
       <p className={showAnswer ? 'answer' : 'question'}>{showAnswer ? card.answer : card.question}</p>
       <div className='cardBottom'>
-        <span onClick={handleCheck}>
-          {!isChecked ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check checked"></i>}
-        </span>
+        <div className='bottom-icons'>
+          <span onClick={handleFavorite}>
+            {card.favorite ? <i className="fa-solid fa-star"></i> : <i className="fa-regular fa-star"></i>}
+          </span>
+          <span onClick={handleStatus}>
+            {card.status === "Not Reviewed" ? <i className="fa-regular fa-circle-check" ></i> : <i className="fa-solid fa-circle-check"></i>}
+          </span>
+        </div>
         <span className="date">{moment(card.createdAt).fromNow()}</span>
       </div>
     </div>

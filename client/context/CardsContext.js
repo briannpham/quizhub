@@ -23,7 +23,9 @@ export const cardsReducer = (state, action) => {
         return {
           ...card,
           question: action.payload.question,
-          answer: action.payload.answer
+          answer: action.payload.answer,
+          status: action.payload.status,
+          favorite: action.payload.favorite
         };
       } else {
         return card;
@@ -36,6 +38,7 @@ export const cardsReducer = (state, action) => {
     return {
       cards: state.cards.filter(card => card._id !== action.payload._id)
     };
+  
   default:
     return state;
   }
