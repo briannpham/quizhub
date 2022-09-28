@@ -52,16 +52,18 @@ cardsController.updateCard = async (req, res, next) => {
       return res.status(404).json({ message: { err: 'Invalid ID. No such card exists' } });
     }
 
-    const updatedQuestion = req.body.question;
-    const updatedAnswer = req.body.answer;
-
-    if (!updatedQuestion || !updatedAnswer) {
+    if (!req.body.question || !req.body.answer) {
       return next({
         message: { err: 'Missing required input field. ERROR in cardsController.updateCard' }
       });
     }
 
-    const update = { question: updatedQuestion, answer: updatedAnswer };
+    const update = {
+      question: req.body.question,
+      answer: req.body.answer,
+      status: req.body.status,
+      favorite: req.body.favorite
+    };
     const updatedCard = await Card.findOneAndUpdate(
       { _id: id },
       update,
