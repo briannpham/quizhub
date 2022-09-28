@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useCardsContext } from "../hooks/useCardsContext";
 import ACTIONS from "../constants/cardsConstant";
 
@@ -8,6 +8,11 @@ const Form = ({ showModal, setShowModal }) => {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
   const [error, setError] = useState(null);
+  const questionRef = useRef(null);
+
+  useEffect(() => {
+    questionRef.current.focus();
+  });
 
   const handleSave = () => {
     axios.post('/api/cards', {
@@ -38,6 +43,7 @@ const Form = ({ showModal, setShowModal }) => {
           placeholder="Type your question here"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
+          ref={questionRef}
         />
       </div>
       <div className="form-control">

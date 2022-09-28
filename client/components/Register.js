@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const SignIn = () => {
+const Register = () => {
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const SignIn = () => {
   return (
     <main>
       <form className='form'>
-        <h1>Sign in</h1>
+        <h1>Register</h1>
         <div className='form-control'>
           <label htmlFor="email">Email Address</label>
           <input type="text" id='email' name='email' ref={inputRef}/>
@@ -20,12 +20,16 @@ const SignIn = () => {
           <label htmlFor="password">Password</label>
           <input type="password" id='password' name='password'/>
         </div>
-        <button type='button'>SIGN IN</button>
-        <div type='button' id='register'><Link to='/register'>Don&apos;t have an account? Sign up</Link></div>
+        <div className='form-control'>
+          <label htmlFor="password2">Confirm Password</label>
+          <input type="password" id='password2' name='password2'/>
+        </div>
+        <button type='button'>REGISTER</button>
+        <div type='button' id='sign-in'><Link to='/'>Sign in</Link></div>
         <div id='copyright'>Copyright © 2022</div>
       </form>
     </main>
   );
 };
 
-export default SignIn;
+export default Register;

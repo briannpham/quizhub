@@ -20,23 +20,20 @@ const logger = (req, res, next) => {
 };
 app.use(logger);
 
+// Connect to database
+const MONGO_URI = 'mongodb+srv://brpham13:brian123456@cluster0.7jepfh4.mongodb.net/?retryWrites=true&w=majority';
+
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => console.log('Connect to Mongo DB'))
+.catch(err => console.log(err));
+
+// mongoose.set('useFindAndModify', false);
 
 // handle parsing request body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(cookieParser());
 // app.use(cors());      // WHAT DOES THIS DO?
-
-
-// Connect to database
-const MONGO_URI = 'mongodb+srv://brpham13:brian123456@cluster0.7jepfh4.mongodb.net/?retryWrites=true&w=majority';
-
-mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connect to Mongo DB'))
-  .catch(err => console.log(err));
-
-// mongoose.set('useFindAndModify', false);
-
 
 // // basic get request to get index.html
 // app.get('/', (req, res) => {
