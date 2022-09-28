@@ -20,7 +20,7 @@ const SignIn = () => {
           <label htmlFor="password">Password</label>
           <input type="password" id='password' name='password'/>
         </div>
-        <button type='button'>SIGN IN</button>
+        <button type='submit'>SIGN IN</button>
         <div type='button' id='register'><Link to='/register'>Don&apos;t have an account? Sign up</Link></div>
         <div id='copyright'>Copyright © 2022</div>
       </form>
