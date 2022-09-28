@@ -25,7 +25,7 @@ userController.register = async (req, res, next) => {
 
     if (userExist) {
       return next({
-        message: { err: 'User already exists. ERROR in userController.regist' }
+        message: { err: 'User already exists. ERROR in userController.register' }
       });
     }
 
@@ -41,7 +41,9 @@ userController.register = async (req, res, next) => {
     });
 
     if (!user) {
-      return res.status(404).json({ message: { err: 'Invalid user data' } });
+      return next({
+        message: { err: 'Invalid user data. ERROR in userController.register' }
+      });
     }
 
     // Generate token after register
@@ -82,7 +84,9 @@ userController.login = async (req, res, next) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ message: { err: 'User does not exist' } });
+      return next({
+        message: { err: 'User does not exist. ERROR in userController.login' }
+      });
     }
 
     // Compare user's password with req.body.password
@@ -103,7 +107,9 @@ userController.login = async (req, res, next) => {
 
       next();
     } else {
-      return res.status(400).json({ message: { err: 'Invalid credential' } });
+      return next({
+        message: { err: 'Invalid credential. ERROR in userController.login' }
+      });
     }
 
   } catch (error) {
@@ -116,15 +122,10 @@ userController.login = async (req, res, next) => {
 // @route:   POST /api/users/me
 userController.getMe = async (req, res, next) => {
   console.log('Me in userController.getMe'.green);
+  const { _id, firstName, lastName, email } = req.user;
+  res.locals.user = { _id, firstName, lastName, email };
   next();
 };
 
-
-// Generate JWT
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
-  });
-};
 
 module.exports = userController;
