@@ -1,27 +1,31 @@
-import { useState } from "react";
-import { useAuthContext } from "./useAuthContext";
-import axios from "axios";
-import ACTIONS from "../constants/constants";
+/**
+ * Custom Hooks
+ */
 
-export const useRegister = () => {
-  const [isLoading, setIsLoading] = useState(null);
-  const [error, setError] = useState(null);
-  const { dispatch } = useAuthContext();
+// import { useState } from "react";
+// import { useAuthContext } from "./useAuthContext";
+// import axios from "axios";
+// import ACTIONS from "../constants/constants";
 
-  const register = async (firstName, lastName, email, password) => {
-    try {
-      console.log('register a user');
-      const res = await axios.post('/api/users', { firstName, lastName, email, password });
+// export const useRegister = () => {
+//   const [isLoading, setIsLoading] = useState(null);
+//   const [error, setError] = useState(null);
+//   const { dispatch } = useAuthContext();
 
-      localStorage.setItem('user', JSON.stringify(res.data));
+//   const register = async (firstName, lastName, email, password) => {
+//     try {
+//       console.log('register a user');
+//       const res = await axios.post('/api/users', { firstName, lastName, email, password });
 
-      dispatch({ type: ACTIONS.LOGIN, payload: res.data });
+//       localStorage.setItem('user', JSON.stringify(res.data));
 
-    } catch (error) {
-      setIsLoading(false);
-      setError(error);
-    }
-  };
+//       dispatch({ type: ACTIONS.LOGIN, payload: res.data });
 
-  return { register, isLoading, error };
-};
+//     } catch (error) {
+//       setIsLoading(false);
+//       setError(error);
+//     }
+//   };
+
+//   return { register, isLoading, error };
+// };

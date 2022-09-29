@@ -1,9 +1,11 @@
+import axios from 'axios';
 import React, { useRef, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useRegister } from '../hooks/useRegister';
+import { Link, useNavigate } from 'react-router-dom';
+import ACTIONS from '../constants/constants';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const Register = () => {
-  const inputRef = useRef(null);      // use to focus on first input box upon mounting
+  const inputRef = useRef(null);  // focus on first input field upon mounting
   const intialState = {
     firstName: '',
     lastName: '',
@@ -14,8 +16,12 @@ const Register = () => {
   
   const [formData, setFormData] = useState(intialState);
   const { firstName, lastName, email, password, password2 } = formData;
-  const { register, isLoading, error } = useRegister();
+  const [errorMessage, setErrorMessage] = useState(null);
 
+  const { dispatch } = useAuthContext();
+  const navigate = useNavigate();
+
+  // focus on first input field upon mounting
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -27,15 +33,25 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    await register(firstName, lastName, email, password);
-    setFormData(intialState);
+    axios.post('/api/users', { firstName, lastName, email, password })
+      .then(res => {
+        localStorage.setItem('user', JSON.stringify(res.data));
+        dispatch({ type: ACTIONS.LOGIN, payload: res.data });
+        setFormData(intialState);
+        navigate('/');    // navigate to main app after sign in
+      })
+      .catch(err => {
+        console.log(err.response.data.err);
+        const error = err.response.data.err.split('.')[0];
+        setErrorMessage(error);
+      });
   };
 
   return (
     <main>
-      <form className='form' onSubmit={handleSubmit}>
+      <form className='form' onSubmit={handleRegister}>
         <h1>Register</h1>
         <div className="form-control name">
           <div id="first-name">
@@ -59,10 +75,11 @@ const Register = () => {
           <label htmlFor="password2">Confirm Password</label>
           <input type="password" id='password2' name='password2' value={password2} onChange={handleChangeForm}/>
         </div>
-        <button type='submit' disabled={isLoading}>REGISTER</button>
+        {errorMessage && <div className='error-message login'>{errorMessage}</div>}
+        <button type='submit'>REGISTER</button>
         <div type='button' id='sign-in'><Link to='/login'>Sign in</Link></div>
         <div id='copyright'>Copyright © 2022</div>
-        {error && <div>{error}</div>}
+        
       </form>
     </main>
   );
