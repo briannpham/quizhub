@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useReducer } from "react";
-import { CardsContext } from "./CardsContext";
 import ACTIONS from "../constants/constants";
 
 export const AuthContext = createContext();
