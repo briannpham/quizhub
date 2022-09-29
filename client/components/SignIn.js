@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSignIn } from '../hooks/useSignIn';
@@ -14,6 +13,7 @@ const SignIn = () => {
   const { email, password } = formData;
 
   const { signIn, error } = useSignIn();
+  const navigate = useNavigate();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -30,6 +30,7 @@ const SignIn = () => {
     e.preventDefault();
     await signIn(email, password);
     setFormData(intialState);
+    navigate('/');    // navigate to main app after sign in
   };
 
   return (
