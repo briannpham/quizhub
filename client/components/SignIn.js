@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { login, reset } from '../features/auth/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import ACTIONS from '../constants/constants';
-import { useAuthContext } from '../hooks/useAuthContext';
 
 const SignIn = () => {
   const inputRef = useRef(null);  // focus on first input field upon mounting
@@ -13,15 +14,25 @@ const SignIn = () => {
 
   const [formData, setFormData] = useState(intialState);
   const { email, password } = formData;
-  const [errorMessage, setErrorMessage] = useState(null);
+  // const [errorMessage, setErrorMessage] = useState(null);
 
-  const { dispatch } = useAuthContext();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { user, message } = useSelector(state => state.auth);
 
   // focus on first input field upon mounting
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
+  // useEffect(() => {
+  //   if (user) {
+  //     navigate('/');
+  //   }
+
+  //   dispatch(reset());
+  // }, [user, errorMessage, navigate, dispatch]);
 
   const handleChangeForm = (e) => {
     setFormData(prevState => ({
@@ -32,18 +43,11 @@ const SignIn = () => {
 
   const handleSignIn = (e) => {
     e.preventDefault();
-    axios.post('/api/users/login', { email, password })
-      .then(res => {
-        localStorage.setItem('user', JSON.stringify(res.data));
-        dispatch({ type: ACTIONS.LOGIN, payload: res.data });
-        setFormData(intialState);
-        navigate('/');    // navigate to main app after sign in
-      })
-      .catch(err => {
-        console.log(err.response.data.err);
-        const error = err.response.data.err.split('.')[0];
-        setErrorMessage(error);
-      });
+
+    const userData = { email, password };
+    dispatch(login(userData));
+    setFormData(intialState);
+    navigate('/');    // navigate to main app after sign in
   };
 
   return (
@@ -58,7 +62,7 @@ const SignIn = () => {
           <label htmlFor="password">Password</label>
           <input type="password" id='password' name='password' value={password} onChange={handleChangeForm}/>
         </div>
-        {errorMessage && <div className='error-message login'>{errorMessage}</div>}
+        {message && <div className='error-message login'>{message}</div>}
         <button type='submit'>SIGN IN</button>
         <div type='button' id='register'><Link to='/register'>Don&apos;t have an account? Sign up</Link></div>
         <div id='copyright'>Copyright © 2022</div>

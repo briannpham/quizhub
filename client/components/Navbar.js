@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useLogout } from '../hooks/useLogout';
-import { useAuthContext } from '../hooks/useAuthContext';
+// import { useLogout } from '../hooks/useLogout';
+// import { useAuthContext } from '../hooks/useAuthContext';
+import { logout, reset } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Navbar = () => {
-  const { user } = useAuthContext();
-  const { logout } = useLogout();
+  // const { user } = useAuthContext();
+  // const { logout } = useLogout();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth);
 
   const handleLogout = () => {
-    logout();
+    // logout();
+    dispatch(logout());
+    dispatch(reset());
     navigate('/login');
   };
   

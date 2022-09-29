@@ -1,44 +1,33 @@
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
-import { useCardsContext } from "../hooks/useCardsContext";
-import { useAuthContext } from "../hooks/useAuthContext";
+// import { useCardsContext } from "../hooks/useCardsContext";
+// import { useAuthContext } from "../hooks/useAuthContext";
+import { useSelector, useDispatch } from "react-redux";
+import { createCard } from "../features/cards/cardsSlice";
 import ACTIONS from "../constants/constants";
 
 const Form = ({ showModal, setShowModal }) => {
-  const { dispatch } = useCardsContext();
+  // const { dispatch } = useCardsContext();
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null);
+  // const [errorMessage, setErrorMessage] = useState(null);
   const questionRef = useRef(null);
 
-  const { user } = useAuthContext();
+  // const { user } = useAuthContext();
+  const dispatch = useDispatch();
+  const { message } = useSelector(state => state.cards);
 
   useEffect(() => {
     questionRef.current.focus();
   }, []);
 
   const handleSave = () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${user.token}`
-      }
-    };
+    const cardData = { question, answer };
 
-    axios.post('/api/cards', {
-      question,
-      answer
-    }, config)
-      .then(res => {
-        dispatch({ type: ACTIONS.CREATE_CARD, payload: res.data });
-        setQuestion('');
-        setAnswer('');
-        setShowModal(false);
-        setErrorMessage(null);
-      })
-      .catch(err => {
-        const error = err.response.data.err.split('.')[0];
-        setErrorMessage(error);
-      });
+    dispatch(createCard(cardData));
+    setQuestion('');
+    setAnswer('');
+    setShowModal(false);
   };
 
   return (
@@ -68,7 +57,7 @@ const Form = ({ showModal, setShowModal }) => {
         >
         </textarea>
       </div>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      {message && <div className="error-message">{message}</div>}
       <button type="button" id="save-btn" onClick={handleSave}>Save</button>
       <button type="button" id="close-btn" onClick={() => setShowModal(false)}>Close</button>
     </form>

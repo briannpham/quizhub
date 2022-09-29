@@ -1,9 +1,9 @@
 import React, { useState }  from 'react';
-import { useCardsContext } from '../hooks/useCardsContext';
-import { useAuthContext } from '../hooks/useAuthContext';
 import axios from 'axios';
 import moment from 'moment';
 import ACTIONS from '../constants/constants';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateCard, deleteCard, reset } from '../features/cards/cardsSlice';
 
 
 const Card = ({ card }) => {
@@ -13,15 +13,15 @@ const Card = ({ card }) => {
   const [question, setQuestion] = useState(card.question);
   const [answer, setAnswer] = useState(card.answer);
 
-  const { dispatch } = useCardsContext();
-  const { user } = useAuthContext();
+  const dispatch = useDispatch();
+  // const { user } = useSelector(state => state.auth);
 
 
-  const config = {
-    headers: {
-      Authorization: `Bearer ${user.token}`
-    }
-  };
+  // const config = {
+  //   headers: {
+  //     Authorization: `Bearer ${user.token}`
+  //   }
+  // };
 
   const handleShowAnswer = () => {
     setShowAnswer(!showAnswer);
@@ -29,18 +29,16 @@ const Card = ({ card }) => {
 
   const handleUpdate = () => {
     setIsEditing(prevState => !prevState);  // another way of using setIsEditting(!isEditting)
-    axios.patch(`/api/cards/${card._id}`, {
+    const cardData = {
+      _id: card._id,
       question,
       answer
-    }, config)
-      .then(res => dispatch({ type: ACTIONS.UPDATE_CARD, payload: res.data }))
-      .catch(err => console.log(err));
+    };
+    dispatch(updateCard(cardData));
   };
 
   const handleDelete = () => {
-    axios.delete(`/api/cards/${card._id}`, config)
-      .then(res => dispatch({ type: ACTIONS.DELETE_CARD, payload: res.data }))
-      .catch(err => console.log(err));
+    dispatch(deleteCard(card.id));
   };
 
   const handleCancel = () => {

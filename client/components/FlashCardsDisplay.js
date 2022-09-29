@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useCardsContext } from '../hooks/useCardsContext';
-import { useAuthContext } from '../hooks/useAuthContext';
 import Form from './Form';
 import CardContainer from './CardContainer';
 import ACTIONS from '../constants/constants';
 import { FaPlus } from "react-icons/fa";
+import { useDispatch, useSelector } from 'react-redux';
+import { loadCards, reset } from '../features/cards/cardsSlice';
+
+
 const FlashCardsDisplay = () => {
   const [showModal, setShowModal] = useState(false);
-  const { cards, dispatch } = useCardsContext();
-  const { user } = useAuthContext();
-
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth);
+  const { cards, message } = useSelector(state => state.cards);
 
   // Loading Flashcards upon opening App
   useEffect(() => {
     console.log('running useEffect'); 
-    if (user) {
-      const config = {
-        headers: {
-          'Authorization': `Bearer ${user.token}`
-        }
-      };
-      axios.get('/api/cards', config)
-        .then(res => dispatch({ type: ACTIONS.LOAD_CARDS, payload: res.data }))
-        .catch(err => console.log(err));
-    }
-  }, [dispatch, user]);
+    dispatch(loadCards());
+  }, [dispatch]);
 
   if (!user) {
     return (

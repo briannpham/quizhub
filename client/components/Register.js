@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, { useRef, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { register, reset } from '../features/auth/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import ACTIONS from '../constants/constants';
-import { useAuthContext } from '../hooks/useAuthContext';
 
 const Register = () => {
   const inputRef = useRef(null);  // focus on first input field upon mounting
@@ -16,15 +17,26 @@ const Register = () => {
   
   const [formData, setFormData] = useState(intialState);
   const { firstName, lastName, email, password, password2 } = formData;
-  const [errorMessage, setErrorMessage] = useState(null);
+  // const [errorMessage, setErrorMessage] = useState(null);
 
-  const { dispatch } = useAuthContext();
+  // const { dispatch } = useAuthContext();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+  let { user, message } = useSelector(state => state.auth);
 
   // focus on first input field upon mounting
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
+  // useEffect(() => {
+  //   if (user) {
+  //     navigate('/');
+  //   }
+
+  //   dispatch(reset());
+  // }, [user, errorMessage, navigate, dispatch]);
 
   const handleChangeForm = (e) => {
     setFormData(prevState => ({
@@ -36,21 +48,14 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     if (password !== password2) {
-      setErrorMessage('Password do not match');
+      // setErrorMessage('Password do not match');
+      message = 'Password do not match';
       return;
     }
-    axios.post('/api/users', { firstName, lastName, email, password })
-      .then(res => {
-        localStorage.setItem('user', JSON.stringify(res.data));
-        dispatch({ type: ACTIONS.LOGIN, payload: res.data });
-        setFormData(intialState);
-        navigate('/');    // navigate to main app after sign in
-      })
-      .catch(err => {
-        console.log(err.response.data.err);
-        const error = err.response.data.err.split('.')[0];
-        setErrorMessage(error);
-      });
+    const userData = { firstName, lastName, email, password };
+    dispatch(register(userData));
+    setFormData(intialState);
+    navigate('/');    // navigate to main app after register
   };
 
   return (
@@ -79,7 +84,7 @@ const Register = () => {
           <label htmlFor="password2">Confirm Password</label>
           <input type="password" id='password2' name='password2' value={password2} onChange={handleChangeForm}/>
         </div>
-        {errorMessage && <div className='error-message login'>{errorMessage}</div>}
+        {message && <div className='error-message login'>{message}</div>}
         <button type='submit'>REGISTER</button>
         <div type='button' id='sign-in'><Link to='/login'>Sign in</Link></div>
         <div id='copyright'>Copyright © 2022</div>

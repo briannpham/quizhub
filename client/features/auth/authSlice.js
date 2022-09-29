@@ -2,13 +2,16 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  user: null
+  user: null,
+  message: ''
 };
 
 // Register user
 export const register = createAsyncThunk('auth/register', async (userData, thunkAPI) => {
   try {
+    console.log('before register');
     const res = await axios.post('/api/users', userData);
+    console.log('after register');
 
     if (res.data) {
       localStorage.setItem('user', JSON.stringify(res.data));
@@ -17,8 +20,8 @@ export const register = createAsyncThunk('auth/register', async (userData, thunk
     return res.data;
   } catch (error) {
     console.log(error);
-    const errorMessage = error.response.data.err.split('.')[0];
-    return thunkAPI.rejectWithValue(errorMessage);
+    const message = error.response.data.err.split('.')[0];
+    return thunkAPI.rejectWithValue(message);
   }
 });
 
@@ -26,17 +29,22 @@ export const register = createAsyncThunk('auth/register', async (userData, thunk
 // Login user
 export const login = createAsyncThunk('auth/login', async (userData, thunkAPI) => {
   try {
+    console.log('before login');    
     const res = await axios.post('/api/users/login', userData);
+    console.log('before login');
 
     if (res.data) {
       localStorage.setItem('user', JSON.stringify(res.data));
     }
 
+    console.log('res.data from login')
+    console.log(res.data)
+
     return res.data;
   } catch (error) {
     console.log(error);
-    const errorMessage = error.response.data.err.split('.')[0];
-    return thunkAPI.rejectWithValue(errorMessage);
+    const message = error.response.data.err.split('.')[0];
+    return thunkAPI.rejectWithValue(message);
   }
 });
 
