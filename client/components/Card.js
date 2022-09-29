@@ -1,5 +1,6 @@
 import React, { useState }  from 'react';
 import { useCardsContext } from '../hooks/useCardsContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 import axios from 'axios';
 import moment from 'moment';
 import ACTIONS from '../constants/constants';
@@ -13,6 +14,14 @@ const Card = ({ card }) => {
   const [answer, setAnswer] = useState(card.answer);
 
   const { dispatch } = useCardsContext();
+  const { user } = useAuthContext();
+
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    }
+  };
 
   const handleShowAnswer = () => {
     setShowAnswer(!showAnswer);
@@ -23,13 +32,13 @@ const Card = ({ card }) => {
     axios.patch(`/api/cards/${card._id}`, {
       question,
       answer
-    })
+    }, config)
       .then(res => dispatch({ type: ACTIONS.UPDATE_CARD, payload: res.data }))
       .catch(err => console.log(err));
   };
 
   const handleDelete = () => {
-    axios.delete(`/api/cards/${card._id}`)
+    axios.delete(`/api/cards/${card._id}`, config)
       .then(res => dispatch({ type: ACTIONS.DELETE_CARD, payload: res.data }))
       .catch(err => console.log(err));
   };
@@ -44,7 +53,7 @@ const Card = ({ card }) => {
     axios.patch(`/api/cards/${card._id}`, {
       ...card,
       favorite: !card.favorite,
-    })
+    }, config)
       .then(res => dispatch({ type: ACTIONS.UPDATE_CARD, payload: res.data }))
       .catch(err => console.log(err));
   };
@@ -54,7 +63,7 @@ const Card = ({ card }) => {
     axios.patch(`/api/cards/${card._id}`, {
       ...card,
       status: newStatus,
-    })
+    }, config)
       .then(res => dispatch({ type: ACTIONS.UPDATE_CARD, payload: res.data }))
       .catch(err => console.log(err));
   };

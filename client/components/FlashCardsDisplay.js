@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useCardsContext } from '../hooks/useCardsContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 import Form from './Form';
 import CardContainer from './CardContainer';
 import ACTIONS from '../constants/constants';
@@ -8,14 +9,23 @@ import ACTIONS from '../constants/constants';
 const FlashCardsDisplay = () => {
   const [showModal, setShowModal] = useState(false);
   const { cards, dispatch } = useCardsContext();
+  const { user } = useAuthContext();
+
 
   // Loading Flashcards upon opening App
   useEffect(() => {
-    console.log('running useEffect');
-    axios.get('/api/cards')
-      .then(res => dispatch({ type: ACTIONS.LOAD_CARDS, payload: res.data }))
-      .catch(err => console.log(err));
-  }, []);
+    console.log('running useEffect'); 
+    if (user) {
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${user.token}`
+        }
+      };
+      axios.get('/api/cards', config)
+        .then(res => dispatch({ type: ACTIONS.LOAD_CARDS, payload: res.data }))
+        .catch(err => console.log(err));
+    }
+  }, [dispatch, user]);
   return (
     <div>
       <div className='container'>

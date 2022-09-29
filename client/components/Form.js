@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import { useCardsContext } from "../hooks/useCardsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 import ACTIONS from "../constants/constants";
 
 const Form = ({ showModal, setShowModal }) => {
@@ -10,15 +11,23 @@ const Form = ({ showModal, setShowModal }) => {
   const [error, setError] = useState(null);
   const questionRef = useRef(null);
 
+  const { user } = useAuthContext();
+
   useEffect(() => {
     questionRef.current.focus();
   }, []);
 
   const handleSave = () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`
+      }
+    };
+
     axios.post('/api/cards', {
       question,
       answer
-    })
+    }, config)
       .then(res => {
         dispatch({ type: ACTIONS.CREATE_CARD, payload: res.data });
         setQuestion('');

@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const { user } = useAuthContext();
   const { logout } = useLogout();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
   
   return (
     <div id="navbar">
@@ -16,7 +23,7 @@ const Navbar = () => {
         {user ? (
           <div>
             <span>{user.firstName} {user.lastName}</span>
-            <button className='nav-btn' onClick={() => logout()}>
+            <button className='nav-btn' onClick={handleLogout}>
               LOG OUT
             </button>
           </div>
