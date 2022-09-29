@@ -100,8 +100,14 @@ export const cardsSlice = createSlice({
       .addCase(loadCards.fulfilled, (state, action) => {
         state.cards = action.payload;
       })
+      .addCase(loadCards.rejected, (state, action) => {
+        state.message = action.payload;
+      })
       .addCase(createCard.fulfilled, (state, action) => {
         state.cards.unshift(action.payload);
+      })
+      .addCase(createCard.rejected, (state, action) => {
+        state.message = action.payload;
       })
       .addCase(updateCard.fulfilled, (state, action) => {
         const card = state.cards.find(card => card._id === action.payload._id);
@@ -112,8 +118,14 @@ export const cardsSlice = createSlice({
           card.favorite = action.payload.favorite;
         }
       })
+      .addCase(updateCard.rejected, (state, action) => {
+        state.message = action.payload;
+      })
       .addCase(deleteCard.fulfilled, (state, action) => {
         state.cards = state.cards.filter(card => card._id !== action.payload._id);
+      })
+      .addCase(deleteCard.rejected, (state, action) => {
+        state.message = action.payload;
       });
   }
 });

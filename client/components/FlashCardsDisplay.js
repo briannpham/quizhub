@@ -11,8 +11,12 @@ import { loadCards, reset } from '../features/cards/cardsSlice';
 const FlashCardsDisplay = () => {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.auth);
-  const { cards, message } = useSelector(state => state.cards);
+  const { user, message } = useSelector(state => state.auth);
+  const { cards } = useSelector(state => state.cards);
+  console.log('card display')
+  console.log(message)
+  console.log(user);
+  console.log(cards)
 
   // Loading Flashcards upon opening App
   useEffect(() => {
@@ -22,7 +26,7 @@ const FlashCardsDisplay = () => {
     return () => {
       dispatch(reset());
     };
-  }, [dispatch, user, message]);
+  }, [dispatch, user]);
 
   if (!localStorage.getItem('user')) {
     return (

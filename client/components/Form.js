@@ -7,13 +7,10 @@ import { createCard } from "../features/cards/cardsSlice";
 import ACTIONS from "../constants/constants";
 
 const Form = ({ showModal, setShowModal }) => {
-  // const { dispatch } = useCardsContext();
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
-  // const [errorMessage, setErrorMessage] = useState(null);
   const questionRef = useRef(null);
 
-  // const { user } = useAuthContext();
   const dispatch = useDispatch();
   const { message } = useSelector(state => state.cards);
 
