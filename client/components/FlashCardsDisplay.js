@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useCardsContext } from '../hooks/useCardsContext';
 import Form from './Form';
 import CardContainer from './CardContainer';
-import ACTIONS from '../constants/cardsConstant';
+import ACTIONS from '../constants/constants';
 
 const FlashCardsDisplay = () => {
   const [showModal, setShowModal] = useState(false);
