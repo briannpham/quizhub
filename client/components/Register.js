@@ -35,6 +35,10 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (password !== password2) {
+      setErrorMessage('Password do not match');
+      return;
+    }
     axios.post('/api/users', { firstName, lastName, email, password })
       .then(res => {
         localStorage.setItem('user', JSON.stringify(res.data));
