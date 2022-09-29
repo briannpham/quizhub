@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom';
+import ACTIONS from '../constants/constants';
 
 const Navbar = () => {
-  const { user } = useAuthContext();
-  const { logout } = useLogout();
+  const { user, dispatch } = useAuthContext();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
+    localStorage.removeItem('user');
+    dispatch({ type: ACTIONS.LOGOUT });
     navigate('/login');
   };
   

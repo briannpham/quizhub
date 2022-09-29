@@ -6,6 +6,8 @@ import Form from './Form';
 import CardContainer from './CardContainer';
 import ACTIONS from '../constants/constants';
 import { FaPlus } from "react-icons/fa";
+
+
 const FlashCardsDisplay = () => {
   const [showModal, setShowModal] = useState(false);
   const { cards, dispatch } = useCardsContext();
@@ -45,7 +47,6 @@ const FlashCardsDisplay = () => {
               </button>
             </div> 
             <div>
-              <h2>Total Cards: {cards.length}</h2>
               <CardContainer cards={cards}/>
             </div>
           </div>

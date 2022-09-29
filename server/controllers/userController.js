@@ -108,7 +108,7 @@ userController.login = async (req, res, next) => {
       next();
     } else {
       return next({
-        message: { err: 'Invalid credential. ERROR in userController.login' }
+        message: { err: 'Invalid email or password. ERROR in userController.login' }
       });
     }
 
