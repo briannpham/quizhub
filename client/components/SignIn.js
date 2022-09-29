@@ -1,9 +1,11 @@
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSignIn } from '../hooks/useSignIn';
+import ACTIONS from '../constants/constants';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const SignIn = () => {
-  const inputRef = useRef(null);
+  const inputRef = useRef(null);  // focus on first input field upon mounting
   const intialState = {
     email: '',
     password: ''
@@ -11,10 +13,12 @@ const SignIn = () => {
 
   const [formData, setFormData] = useState(intialState);
   const { email, password } = formData;
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  const { signIn, error } = useSignIn();
+  const { dispatch } = useAuthContext();
   const navigate = useNavigate();
 
+  // focus on first input field upon mounting
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -26,16 +30,25 @@ const SignIn = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSignIn = (e) => {
     e.preventDefault();
-    await signIn(email, password);
-    setFormData(intialState);
-    navigate('/');    // navigate to main app after sign in
+    axios.post('/api/users/login', { email, password })
+      .then(res => {
+        localStorage.setItem('user', JSON.stringify(res.data));
+        dispatch({ type: ACTIONS.LOGIN, payload: res.data });
+        setFormData(intialState);
+        navigate('/');    // navigate to main app after sign in
+      })
+      .catch(err => {
+        console.log(err.response.data.err);
+        const error = err.response.data.err.split('.')[0];
+        setErrorMessage(error);
+      });
   };
 
   return (
     <main>
-      <form className='form' onSubmit={handleSubmit}>
+      <form className='form' onSubmit={handleSignIn}>
         <h1>Sign in</h1>
         <div className='form-control'>
           <label htmlFor="email">Email Address</label>
@@ -45,6 +58,7 @@ const SignIn = () => {
           <label htmlFor="password">Password</label>
           <input type="password" id='password' name='password' value={password} onChange={handleChangeForm}/>
         </div>
+        {errorMessage && <div className='error-message login'>{errorMessage}</div>}
         <button type='submit'>SIGN IN</button>
         <div type='button' id='register'><Link to='/register'>Don&apos;t have an account? Sign up</Link></div>
         <div id='copyright'>Copyright © 2022</div>

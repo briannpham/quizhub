@@ -5,7 +5,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import Form from './Form';
 import CardContainer from './CardContainer';
 import ACTIONS from '../constants/constants';
-
+import { FaPlus } from "react-icons/fa";
 const FlashCardsDisplay = () => {
   const [showModal, setShowModal] = useState(false);
   const { cards, dispatch } = useCardsContext();
@@ -26,6 +26,13 @@ const FlashCardsDisplay = () => {
         .catch(err => console.log(err));
     }
   }, [dispatch, user]);
+
+  if (!user) {
+    return (
+      <h1 id="welcome">Welcome</h1>
+    );
+  }
+
   return (
     <div>
       <div className='container'>
@@ -34,7 +41,7 @@ const FlashCardsDisplay = () => {
           <div>
             <div className="btn-container">
               <button className="show-modal" onClick={() => setShowModal(!showModal)}>
-              ADD
+                <FaPlus className='add-card' />
               </button>
             </div> 
             <div>

@@ -17,12 +17,12 @@ const Navbar = () => {
   return (
     <div id="navbar">
       <div className='logo'>
-        <Link to='/'>Flashcard App</Link>
+        <Link to='/'>Flashcard.io</Link>
       </div>
       <div>
         {user ? (
           <div>
-            <span>{user.firstName} {user.lastName}</span>
+            <span id='user'>Hello, {user.firstName}</span>
             <button className='nav-btn' onClick={handleLogout}>
               LOG OUT
             </button>

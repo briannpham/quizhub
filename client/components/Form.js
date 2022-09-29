@@ -8,7 +8,7 @@ const Form = ({ showModal, setShowModal }) => {
   const { dispatch } = useCardsContext();
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const questionRef = useRef(null);
 
   const { user } = useAuthContext();
@@ -33,11 +33,11 @@ const Form = ({ showModal, setShowModal }) => {
         setQuestion('');
         setAnswer('');
         setShowModal(false);
-        setError(null);
+        setErrorMessage(null);
       })
       .catch(err => {
         const error = err.response.data.err.split('.')[0];
-        setError(error);
+        setErrorMessage(error);
       });
   };
 
@@ -68,7 +68,7 @@ const Form = ({ showModal, setShowModal }) => {
         >
         </textarea>
       </div>
-      {error && <div id="error-message">{error}</div>}
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
       <button type="button" id="save-btn" onClick={handleSave}>Save</button>
       <button type="button" id="close-btn" onClick={() => setShowModal(false)}>Close</button>
     </form>
