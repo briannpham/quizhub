@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { useLogout } from '../hooks/useLogout';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const Navbar = () => {
-  const [user, setUser] = useState(false);
+  const { user } = useAuthContext();
+  const { logout } = useLogout();
+  
   return (
     <div id="navbar">
       <div className='logo'>
@@ -12,21 +15,22 @@ const Navbar = () => {
       <div>
         {user ? (
           <div>
-            <button className='nav-btn'>
-              Logout
+            <span>{user.firstName} {user.lastName}</span>
+            <button className='nav-btn' onClick={() => logout()}>
+              LOG OUT
             </button>
           </div>
         ) : (
           <div className='login-logout'>
             <div>
-              <button className='nav-btn'>
-                <Link to='/login'>SIGN IN</Link>
-              </button>
+              <Link to='/login'>
+                <button className='nav-btn'>SIGN IN</button>
+              </Link>
             </div>
             <div>
-              <button className='nav-btn'>
-                <Link to='/register'>REGISTER</Link>
-              </button>
+              <Link to='/register'>
+                <button className='nav-btn'>REGISTER</button>
+              </Link>
             </div>
           </div>
         )}

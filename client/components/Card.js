@@ -2,7 +2,7 @@ import React, { useState }  from 'react';
 import { useCardsContext } from '../hooks/useCardsContext';
 import axios from 'axios';
 import moment from 'moment';
-import ACTIONS from '../constants/cardsConstant';
+import ACTIONS from '../constants/constants';
 
 
 const Card = ({ card }) => {

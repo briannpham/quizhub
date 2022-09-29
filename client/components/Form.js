@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import { useCardsContext } from "../hooks/useCardsContext";
-import ACTIONS from "../constants/cardsConstant";
+import ACTIONS from "../constants/constants";
 
 const Form = ({ showModal, setShowModal }) => {
   const { dispatch } = useCardsContext();
@@ -12,7 +12,7 @@ const Form = ({ showModal, setShowModal }) => {
 
   useEffect(() => {
     questionRef.current.focus();
-  });
+  }, []);
 
   const handleSave = () => {
     axios.post('/api/cards', {

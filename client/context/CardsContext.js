@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from "react";
-import ACTIONS from "../constants/cardsConstant";
+import ACTIONS from "../constants/constants";
 
 
 export const CardsContext = createContext();
