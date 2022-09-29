@@ -9,18 +9,20 @@ const initialState = {
 // Loading cards
 export const loadCards = createAsyncThunk('cards/loadCards', async (_, thunkAPI) => {
   try {
-    const token = thunkAPI.getState().auth;
+    const token = thunkAPI.getState().auth.user.token;
+    console.log('token in cardsSlice.loadCards');
     console.log(token);
-    // const config = {
-    //   headers: {
-    //     'Authorization': `Bearer ${token}`
-    //   }
-    // };
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
 
-    // const res = await axios.get('/api/cards', config);
+    const res = await axios.get('/api/cards', config);
 
-    // return res.data;
+    return res.data;
   } catch (error) {
+    console.log('error in cardsSlice.loadCards');
     console.log(error);
     const message = error.response.data.err.split('.')[0];
     return thunkAPI.rejectWithValue(message);
@@ -37,6 +39,8 @@ export const createCard = createAsyncThunk('cards/createCard', async (cardData, 
       }
     };
 
+    console.log('in cardsSlice.createCards')
+    console.log(cardData);
     const res = await axios.post('/api/cards', cardData, config);
 
     return res.data;
@@ -76,6 +80,8 @@ export const deleteCard = createAsyncThunk('cards/deleteCard', async (id, thunkA
     };
 
     const res = await axios.delete(`/api/cards/${id}`, config);
+    console.log(id);
+    console.log(res.data);
 
     return res.data;
   } catch (error) {
@@ -88,6 +94,27 @@ export const cardsSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => initialState
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(loadCards.fulfilled, (state, action) => {
+        state.cards = action.payload;
+      })
+      .addCase(createCard.fulfilled, (state, action) => {
+        state.cards.unshift(action.payload);
+      })
+      .addCase(updateCard.fulfilled, (state, action) => {
+        const card = state.cards.find(card => card._id === action.payload._id);
+        if (card) {
+          card.question = action.payload.question;
+          card.answer = action.payload.answer;
+          card.status = action.payload.status;
+          card.favorite = action.payload.favorite;
+        }
+      })
+      .addCase(deleteCard.fulfilled, (state, action) => {
+        state.cards = state.cards.filter(card => card._id !== action.payload._id);
+      });
   }
 });
 

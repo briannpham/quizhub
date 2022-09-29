@@ -37,13 +37,15 @@ export const login = createAsyncThunk('auth/login', async (userData, thunkAPI) =
       localStorage.setItem('user', JSON.stringify(res.data));
     }
 
-    console.log('res.data from login')
-    console.log(res.data)
+    console.log('res.data from login');
+    console.log(res.data);   // this works
 
     return res.data;
   } catch (error) {
-    console.log(error);
+    console.log('error in auth/login');
+    // console.log(error);
     const message = error.response.data.err.split('.')[0];
+    console.log(message);   // this works
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -60,6 +62,18 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => initialState
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(register.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+      });
   }
 });
 

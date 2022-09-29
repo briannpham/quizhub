@@ -29,16 +29,12 @@ const Card = ({ card }) => {
 
   const handleUpdate = () => {
     setIsEditing(prevState => !prevState);  // another way of using setIsEditting(!isEditting)
-    const cardData = {
-      _id: card._id,
-      question,
-      answer
-    };
+    const cardData = { _id: card._id, question, answer };
     dispatch(updateCard(cardData));
   };
 
   const handleDelete = () => {
-    dispatch(deleteCard(card.id));
+    dispatch(deleteCard(card._id));
   };
 
   const handleCancel = () => {
@@ -48,22 +44,27 @@ const Card = ({ card }) => {
   };
 
   const handleFavorite = () => {
-    axios.patch(`/api/cards/${card._id}`, {
-      ...card,
-      favorite: !card.favorite,
-    }, config)
-      .then(res => dispatch({ type: ACTIONS.UPDATE_CARD, payload: res.data }))
-      .catch(err => console.log(err));
+    const cardData = { ...card, favorite: !card.favorite };
+    dispatch(updateCard(cardData));
+
+    // axios.patch(`/api/cards/${card._id}`, {
+    //   ...card,
+    //   favorite: !card.favorite,
+    // }, config)
+    //   .then(res => dispatch({ type: ACTIONS.UPDATE_CARD, payload: res.data }))
+    //   .catch(err => console.log(err));
   };
 
   const handleStatus = () => {
     const newStatus = card.status === "Not Reviewed" ? "Reviewed" : "Not Reviewed";
-    axios.patch(`/api/cards/${card._id}`, {
-      ...card,
-      status: newStatus,
-    }, config)
-      .then(res => dispatch({ type: ACTIONS.UPDATE_CARD, payload: res.data }))
-      .catch(err => console.log(err));
+    const cardData = { ...card, status: newStatus };
+    dispatch(updateCard(cardData));
+    // axios.patch(`/api/cards/${card._id}`, {
+    //   ...card,
+    //   status: newStatus,
+    // }, config)
+    //   .then(res => dispatch({ type: ACTIONS.UPDATE_CARD, payload: res.data }))
+    //   .catch(err => console.log(err));
   };
 
   if (isEditing) {

@@ -18,9 +18,13 @@ const FlashCardsDisplay = () => {
   useEffect(() => {
     console.log('running useEffect'); 
     dispatch(loadCards());
-  }, [dispatch]);
 
-  if (!user) {
+    return () => {
+      dispatch(reset());
+    };
+  }, [dispatch, user, message]);
+
+  if (!localStorage.getItem('user')) {
     return (
       <h1 id="welcome">Welcome</h1>
     );
@@ -38,7 +42,7 @@ const FlashCardsDisplay = () => {
               </button>
             </div> 
             <div>
-              <h2>Total Cards: {cards.length}</h2>
+              <h2>Total Cards: {cards.lenth}</h2>
               <CardContainer cards={cards}/>
             </div>
           </div>
