@@ -7,7 +7,6 @@ const CardContainer = ({ cards }) => {
   const [reviewed, setReviewed] = useState(false);
   const [favorite, setFavorite] = useState(false);
 
-  // let clicked = '';
   const handleClick = (e) => {
     const id = e.target.id;
     if (id === 'not-reviewed') {

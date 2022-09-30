@@ -40,7 +40,6 @@ const SignIn = () => {
         navigate('/');    // navigate to main app after sign in
       })
       .catch(err => {
-        console.log(err.response.data.err);
         const error = err.response.data.err.split('.')[0];
         setErrorMessage(error);
       });

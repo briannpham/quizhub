@@ -4,7 +4,7 @@ import { useCardsContext } from "../hooks/useCardsContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 import ACTIONS from "../constants/constants";
 
-const Form = ({ showModal, setShowModal }) => {
+const Form = ({ setShowModal }) => {
   const { dispatch } = useCardsContext();
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');

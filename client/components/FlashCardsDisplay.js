@@ -16,7 +16,6 @@ const FlashCardsDisplay = () => {
 
   // Loading Flashcards upon opening App
   useEffect(() => {
-    console.log('running useEffect'); 
     if (user) {
       const config = {
         headers: {
@@ -38,7 +37,7 @@ const FlashCardsDisplay = () => {
   return (
     <div>
       <div className='container'>
-        {showModal ? <Form showModal={showModal} setShowModal={setShowModal}/>
+        {showModal ? <Form setShowModal={setShowModal}/>
           :
           <div>
             <div className="btn-container">
