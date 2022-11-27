@@ -23,7 +23,6 @@ const logger = (req, res, next) => {
 app.use(logger);
 
 // Connect to database
-// const MONGO_URI = 'mongodb+srv://brpham13:brian123456@cluster0.7jepfh4.mongodb.net/?retryWrites=true&w=majority';
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Connect to Mongo DB'))
