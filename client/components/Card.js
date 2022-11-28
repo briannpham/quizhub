@@ -16,7 +16,7 @@ const Card = ({ card }) => {
   const { dispatch } = useCardsContext();
   const { user } = useAuthContext();
 
-
+  // Attach token to headers before making HTTP request
   const config = {
     headers: {
       Authorization: `Bearer ${user.token}`

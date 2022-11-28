@@ -22,21 +22,21 @@ const Navbar = () => {
       <div>
         {user ? (
           <div>
-            <span id='user'>Hello, {user.firstName}</span>
+            <span id='user'>Welcome, {user.firstName}</span>
             <button className='nav-btn' onClick={handleLogout}>
-              LOG OUT
+              Sign out
             </button>
           </div>
         ) : (
           <div className='login-logout'>
             <div>
               <Link to='/login'>
-                <button className='nav-btn'>SIGN IN</button>
+                <button className='nav-btn'>Log in</button>
               </Link>
             </div>
             <div>
               <Link to='/register'>
-                <button className='nav-btn'>REGISTER</button>
+                <button className='nav-btn'>Sign up</button>
               </Link>
             </div>
           </div>

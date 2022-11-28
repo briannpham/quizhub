@@ -9,8 +9,6 @@ const userController = {};
 // @route:   POST /api/users/
 userController.register = async (req, res, next) => {
   try {
-    console.log('Register user in userController.register'.green);
-
     const { firstName, lastName, email, password } = req.body;
 
     if (!firstName || !lastName || !email || !password) {
@@ -54,14 +52,12 @@ userController.register = async (req, res, next) => {
     res.locals.user = {
       _id: user._id,
       firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
       token: token
     };
 
-    next();
+    return next();
   } catch (error) {
-    res.status(404).json({ message: { err: error.message } });
+    return res.status(404).json({ message: { err: error.message } });
   }
 };
 
@@ -70,7 +66,6 @@ userController.register = async (req, res, next) => {
 // @route:   POST /api/users/login
 userController.login = async (req, res, next) => {
   try {
-    console.log('Login user in userController.login'.green);
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -99,12 +94,10 @@ userController.login = async (req, res, next) => {
       res.locals.user = {
         _id: user._id,
         firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
         token: token
       };
 
-      next();
+      return next();
     } else {
       return next({
         message: { err: 'Invalid email or password. ERROR in userController.login' }
@@ -112,7 +105,7 @@ userController.login = async (req, res, next) => {
     }
 
   } catch (error) {
-    res.status(404).json({ message: { err: error.message } });
+    return res.status(404).json({ message: { err: error.message } });
   }
 };
 
@@ -120,10 +113,9 @@ userController.login = async (req, res, next) => {
 // @desc     Login user
 // @route:   POST /api/users/me
 userController.getMe = async (req, res, next) => {
-  console.log('Me in userController.getMe'.green);
   const { _id, firstName, lastName, email } = req.user;
   res.locals.user = { _id, firstName, lastName, email };
-  next();
+  return next();
 };
 
 

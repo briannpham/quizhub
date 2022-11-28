@@ -8,14 +8,12 @@ const cardsController = {};
 // @route:   GET /api/cards
 cardsController.loadCards = async (req, res, next) => {
   try {
-    console.log('Loading cards in cardsController.loadCards'.green);
-    console.log(req.user);
     const cards = await Card.find({ user: req.user._id }).sort({ createdAt: -1 });
 
     res.locals.cards = cards;
-    next();
+    return next();
   } catch (error) {
-    res.status(404).json({ message: { err: error.message } });
+    return res.status(404).json({ message: { err: error.message } });
   }
 };
 
@@ -24,7 +22,6 @@ cardsController.loadCards = async (req, res, next) => {
 // @route:   POST /api/cards
 cardsController.createCard = async (req, res, next) => {
   try {
-    console.log('Creating card in cardsController.loadCards'.green);
     const { question, answer } = req.body;
 
     if (!question || !answer) {
@@ -35,10 +32,9 @@ cardsController.createCard = async (req, res, next) => {
 
     const newCard = await Card.create({ user: req.user._id, question, answer });
     res.locals.newCard = newCard;
-    console.log(res.locals.newCard);
-    next();
+    return next();
   } catch (error) {
-    res.status(404).json({ message: { err: error.message } });
+    return res.status(404).json({ message: { err: error.message } });
   }
 };
 
@@ -46,7 +42,6 @@ cardsController.createCard = async (req, res, next) => {
 // @route:   PATCH /api/cards/:id
 cardsController.updateCard = async (req, res, next) => {
   try {
-    console.log('Updating card in cardsController.updateCard'.green);
     const id = req.params.id;
 
     // check if /:id is a valid ObjectId in database
@@ -70,7 +65,7 @@ cardsController.updateCard = async (req, res, next) => {
       });
     }
 
-    const update = {
+    const updateData = {
       question: req.body.question,
       answer: req.body.answer,
       status: req.body.status,
@@ -94,14 +89,14 @@ cardsController.updateCard = async (req, res, next) => {
  
     const updatedCard = await Card.findOneAndUpdate(
       { _id: id },
-      update,
+      updateData,
       { new: true }
     );
 
     res.locals.updatedCard = updatedCard;
-    next();
+    return next();
   } catch (error) {
-    res.status(404).json({ message: { err: error.message } });
+    return res.status(404).json({ message: { err: error.message } });
   }
 };
 
@@ -110,7 +105,6 @@ cardsController.updateCard = async (req, res, next) => {
 // @route:   DELETE /api/cards/:id
 cardsController.deleteCard = async (req, res, next) => {
   try {
-    console.log('Deleting card in cardsController.deleteCard'.green);
     const id = req.params.id;
 
     // check if /:id is a valid ObjectId in database
@@ -138,8 +132,6 @@ cardsController.deleteCard = async (req, res, next) => {
 
     // User can only delete his/her own flashcards
     if (card.user.toString() !== user._id.toString()) {
-      console.log(card.user);
-      console.log(user._id);
       return next({
         message: { err: 'User not authorized to delete. ERROR in cardsController.deleteCard' }
       });
@@ -148,9 +140,9 @@ cardsController.deleteCard = async (req, res, next) => {
     const deletedCard = await Card.findOneAndDelete({ _id: id });
 
     res.locals.deletedCard = deletedCard;
-    next();
+    return next();
   } catch (error) {
-    res.status(404).json({ message: { err: error.message } });
+    return res.status(404).json({ message: { err: error.message } });
   }
 };
 

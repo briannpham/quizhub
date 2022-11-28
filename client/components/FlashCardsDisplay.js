@@ -9,6 +9,7 @@ import { FaPlus } from "react-icons/fa";
 
 
 const FlashCardsDisplay = () => {
+  // Toggle Add Card modal
   const [showModal, setShowModal] = useState(false);
   const { cards, dispatch } = useCardsContext();
   const { user } = useAuthContext();
@@ -30,7 +31,7 @@ const FlashCardsDisplay = () => {
 
   if (!user) {
     return (
-      <h1 id="welcome">Welcome</h1>
+      <h1 id="welcome">Log in to use Flashcard.io now!</h1>
     );
   }
 

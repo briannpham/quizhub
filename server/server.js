@@ -3,8 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 const colors = require('colors');
-// const cookieParser = require('cookie-parser');
-// const cors = require('cors');
+const cors = require('cors');
 const moment = require('moment');
 
 const app = express();
@@ -15,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 const cardsRouter = require('./routes/cardsRoute.js');
 const userRouter = require('./routes/userRoute.js');
 
-// logger
+// Logging requests to terminal
 const logger = (req, res, next) => {
   console.log(`${req.method.yellow}`, `${req.protocol}://${req.get('host').yellow}${req.originalUrl.brightCyan}`, `${moment().format().green}`);
   next();
@@ -23,18 +22,15 @@ const logger = (req, res, next) => {
 app.use(logger);
 
 // Connect to database
-
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-.then(() => console.log('Connect to Mongo DB'))
-.catch(err => console.log(err));
+  .then(() => console.log('Connect to Mongo DB'))
+  .catch(err => console.log(err));
 
-// mongoose.set('useFindAndModify', false);
 
 // handle parsing request body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(cookieParser());
-// app.use(cors());      // WHAT DOES THIS DO?
+app.use(cors());   
 
 // // basic get request to get index.html
 // app.get('/', (req, res) => {

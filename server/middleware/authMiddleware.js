@@ -4,7 +4,6 @@ const User = require('../models/userModel');
 const authMiddleware = {};
 
 authMiddleware.protect = async (req, res, next) => {
-  console.log('Authentication in authMiddleware.protect'.green);
   let token;
 
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
@@ -18,9 +17,9 @@ authMiddleware.protect = async (req, res, next) => {
       // Get user from the token
       req.user = await User.findOne({ _id: decoded._id }, { password: 0 });
 
-      next();
+      return next();
     } catch (error) {
-      res.status(404).json({ message: { err: 'Not Authorized' } });
+      return res.status(404).json({ message: { err: 'Not Authorized' } });
 
     }
   }
