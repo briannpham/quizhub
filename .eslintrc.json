@@ -28,7 +28,7 @@
         "prefer-const": "warn",
         // "quotes": ["warn", "single"],
         "react/prop-types": "off",
-        "semi": ["warn", "always"],
+        // "semi": ["warn", "always"],
         "space-infix-ops": "warn"
     }
 }
