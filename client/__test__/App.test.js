@@ -102,93 +102,115 @@ describe('Navbar Component', () => {
 });
 
 describe('SignIn Component', () => {
+  beforeEach(() => {
+    render(<MockedComponent component={<SignIn />} />);
+  });
 
   it('Display Sign in heading', () => {
-    render(<MockedComponent component={<SignIn />} />);
-
     expect(screen.getByRole('heading')).toHaveTextContent('Sign in');
   });
   
-  it('Display two input boxes with corresponding label', () => {
-    render(<MockedComponent component={<SignIn />} />);
-
-    expect(screen.getByLabelText('Email Address')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password')).toBeInTheDocument();
+  it('Display Email Address and Password inputs', () => {
+    expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
   });
 
-  it('Display a button with SIGN IN text', () => {
-    render(<MockedComponent component={<SignIn />} />);
+  it('Should be able to type an email', async () => {
+    const emailInputElement = screen.getByRole('textbox', {
+      name: /email address/i
+    });
+    await userEvent.type(emailInputElement, 'brian@gmail.com');
+    expect(emailInputElement.value).toBe('brian@gmail.com');
+  });
 
-    expect(screen.getByRole('button')).toHaveTextContent('SIGN IN');
+  it('Should display error message when submitted if email is empty', async () => {
+    const emailInputElement = screen.getByRole('textbox', {
+      name: /email address/i
+    });
+
+    expect(screen.queryByText(/missing required input fields/i)).toBe(null);
+
+    await userEvent.type(emailInputElement, 'brian@gmail.com');
+    const submitButtonElement = screen.getByRole('button', {
+      name: /sign in/i
+    });
+    await userEvent.click(submitButtonElement);
+
+    expect(screen.queryByText(/missing required input fields/i)).toBeInTheDocument();
+  });
+
+  it('Should display error message when submitted if email is empty', async () => {
+    const passwordInputElement = screen.getByLabelText(/password/i);
+
+    expect(screen.queryByText(/missing required input fields/i)).toBe(null);
+
+    await userEvent.type(passwordInputElement, '123');
+    const submitButtonElement = screen.getByRole('button', {
+      name: /sign in/i
+    });
+    await userEvent.click(submitButtonElement);
+
+    expect(screen.queryByText(/missing required input fields/i)).toBeInTheDocument();
   });
 
   it('Display Sign up text where user can click to go to sign up page', () => {
-    render(<MockedComponent component={<SignIn />} />);
-
     expect(screen.getByText(/sign up/i)).toBeInTheDocument();
   });
 });
 
 describe('Register Component', () => {
+  beforeEach(() => {
+    render(<MockedComponent component={<Register />} />);
+  });
 
   it('Display Register heading', () => {
-    render(<MockedComponent component={<Register />} />);
-
     expect(screen.getByRole('heading').innerHTML).toMatch('Register');
   });
   
   it('Display two input boxes with corresponding label', () => {
-    render(<MockedComponent component={<Register />} />);
-
-    expect(screen.getByLabelText('First Name')).toBeInTheDocument();
-    expect(screen.getByLabelText('Last Name')).toBeInTheDocument();
-    expect(screen.getByLabelText('Email Address')).toBeInTheDocument();
+    expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
     expect(screen.getByLabelText('Confirm Password')).toBeInTheDocument();
   });
 
   it('Display a button with REGISTER text', () => {
-    render(<MockedComponent component={<Register />} />);
-
     expect(screen.getByRole('button')).toHaveTextContent('REGISTER');
   });
 
   it('Display Sign in text where user can click to go to sign in page', () => {
-    render(<MockedComponent component={<Register />} />);
-
     expect(screen.getByText(/sign in/i)).toBeInTheDocument();
   });
 });
 
 describe('Form Component', () => {
+  beforeEach(() => {
+    render(<MockedComponent component={<Form />} />);
+  });
 
   it('Display Add Flashcard heading', () => {
-    render(<MockedComponent component={<Form />} />);
-
     expect(screen.getByRole('heading')).toHaveTextContent('Add Flashcard');
   });
 
   it('Display two input boxes for question and answer', () => {
-    render(<MockedComponent component={<Form />} />);
-
     expect(screen.getByPlaceholderText('Type your question here')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Answer...')).toBeInTheDocument();
   });
 
   it('Display two buttons Save and Close', () => {
-    render(<MockedComponent component={<Form />} />);
     expect(screen.getByRole('button', { name: /save/i })).toHaveTextContent('Save');
     expect(screen.getByRole('button', { name: /close/i })).toHaveTextContent('Close');
   });
 });
 
 describe('CardContainer and Card Component', () => {
+  beforeEach(() => {
+    customRender(<FlashCardsDisplay />, {authProviderProps}, {cardProviderProps});
+  });
 
   it('Total cards heading display correct number of cards', async () => {
-    const user = userEvent.setup();
-    customRender(<FlashCardsDisplay />, {authProviderProps}, {cardProviderProps});
     expect(screen.getByRole('heading', { name: /total cards/i })).toHaveTextContent('Total Cards: 2');
-    
     expect(screen.getByText(/^not reviewed$/i)).toBeInTheDocument();
     expect(screen.getByText(/^reviewed$/i)).toBeInTheDocument();
     expect(screen.getByText(/^favorite$/i)).toBeInTheDocument();
@@ -196,15 +218,12 @@ describe('CardContainer and Card Component', () => {
   });
   
   it('Display answer when Check Answer is clicked', async () => {
-    const user = userEvent.setup();
-    customRender(<FlashCardsDisplay />, {authProviderProps}, {cardProviderProps});
-
     expect(screen.getByText(/react/i)).toHaveTextContent('What is React');
     expect(screen.getByText(/redux/i)).toHaveTextContent('What is Redux');
 
-    await user.click(screen.queryAllByText(/check answer/i)[0]);
+    await userEvent.click(screen.queryAllByText(/check answer/i)[0]);
     expect(screen.getByText(/framework library/i)).toBeInTheDocument();
-    await user.click(screen.queryAllByText(/check answer/i)[1]);
+    await userEvent.click(screen.queryAllByText(/check answer/i)[1]);
     expect(screen.getByText(/state management/i)).toBeInTheDocument();
   });
 });

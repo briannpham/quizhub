@@ -32,6 +32,10 @@ const SignIn = () => {
 
   const handleSignIn = (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      setErrorMessage('Missing required input fields');
+      return;
+    }
     axios.post('/api/users/login', { email, password })
       .then(res => {
         localStorage.setItem('user', JSON.stringify(res.data));
